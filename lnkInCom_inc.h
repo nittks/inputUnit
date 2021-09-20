@@ -1,0 +1,9 @@
+
+
+enum{
+	UART_NO_ID,
+	UART_NO_LEN,
+	UART_NO_PALSE_SET,
+	UART_NO_SUM,
+	UART_NO_MAX
+};
