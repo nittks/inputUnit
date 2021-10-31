@@ -15,40 +15,40 @@ static void stateJudge( void );
 static void proc( void );
 static void apryEep( void );
 //********************************************************************************
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************
 void initAplCtrl( void )
 {
 	aplCtrl.state		= APL_CTRL_STATE_BOOT;
 }
 //********************************************************************************
-// §Œäó‘Ôæ“¾
+// åˆ¶å¾¡çŠ¶æ…‹å–å¾—
 //********************************************************************************
 APL_CTRL *getAplCtrl( void )
 {
 	return( &aplCtrl );
 }
 //********************************************************************************
-// ƒpƒ‹ƒXİ’è’læ“¾
+// ãƒ‘ãƒ«ã‚¹è¨­å®šå€¤å–å¾—
 //********************************************************************************
 APL_CTRL_SET *getAplCtrlSet( void )
 {
 	return( &aplCtrlSet );
 }
 //********************************************************************************
-// ƒƒCƒ“ˆ—
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 //********************************************************************************
 void aplCtrlMain( void )
 {
 
-	//ó‘Ô”»’èAó‘Ô‘JˆÚ
+	//çŠ¶æ…‹åˆ¤å®šã€çŠ¶æ…‹é·ç§»
 	stateJudge();
 
-	//Šeó‘Ôˆ—
+	//å„çŠ¶æ…‹æ™‚å‡¦ç†
 	proc();
 }
 //********************************************************************************
-// ó‘Ô”»’èAó‘Ô‘JˆÚ
+// çŠ¶æ…‹åˆ¤å®šã€çŠ¶æ…‹é·ç§»
 //********************************************************************************
 static void stateJudge( void )
 {
@@ -58,26 +58,26 @@ static void stateJudge( void )
 
 	switch( aplCtrl.state ){
 	//****************************************
-	// ‰‰ñ‹N“®
+	// åˆå›èµ·å‹•
 	//****************************************
-	case APL_CTRL_STATE_BOOT:		//‹N“®‰‰ñ
-		if( inAplDataEep->read != APL_DATA_EEP_STATE_UNREAD ){		//EEPROM“Ç‚İ‚İÏ‚İ
-			apryEep();		//‰‰ñ‚ÍEEPROM‚Ìƒf[ƒ^‚ğ“K—p‚·‚é
+	case APL_CTRL_STATE_BOOT:		//èµ·å‹•åˆå›
+		if( inAplDataEep->read != APL_DATA_EEP_STATE_UNREAD ){		//EEPROMèª­ã¿è¾¼ã¿æ¸ˆã¿
+			apryEep();		//åˆå›ã¯EEPROMã®ãƒ‡ãƒ¼ã‚¿ã‚’é©ç”¨ã™ã‚‹
 			aplCtrl.state = APL_CTRL_STATE_NOMARL;
 		}
 		break;
 
 	//****************************************
-	// ’Êí
+	// é€šå¸¸
 	//****************************************
-	case APL_CTRL_STATE_NOMARL:		//’Êí
-		//–³ˆ—
+	case APL_CTRL_STATE_NOMARL:		//é€šå¸¸
+		//ç„¡å‡¦ç†
 		break;
 
 	}
 }
 //********************************************************************************
-// Šeó‘Ôˆ—
+// å„çŠ¶æ…‹æ™‚å‡¦ç†
 //********************************************************************************
 static void proc( void )
 {
@@ -87,25 +87,25 @@ static void proc( void )
 	inAplDataCom	= getAplDataCom();
 
 	switch( aplCtrl.state ){
-	case APL_CTRL_STATE_BOOT:		//‹N“®‰‰ñ
-		//–³ˆ—
+	case APL_CTRL_STATE_BOOT:		//èµ·å‹•åˆå›
+		//ç„¡å‡¦ç†
 		break;
 
-	case APL_CTRL_STATE_NOMARL:		//’Êí
-		//İ’è•ÏX—v‹—L‚è
+	case APL_CTRL_STATE_NOMARL:		//é€šå¸¸
+		//è¨­å®šå¤‰æ›´è¦æ±‚æœ‰ã‚Š
 		if( inAplDataCom->chReq == true ){
 			aplCtrlSet.palseSpeed	= inAplDataCom->palseSpeed;
 			aplCtrlSet.palseRev		= inAplDataCom->palseRev;
-			setLnkOutEep();		//EEPROM‘‚İ—v‹
+			setLnkOutEep();		//EEPROMæ›¸è¾¼ã¿è¦æ±‚
 			outLnkInPalseCnt.palseSpeed	= inAplDataCom->palseSpeed; 
 			outLnkInPalseCnt.palseRev	= inAplDataCom->palseRev; 
-			setLnkInPalseCnt( &outLnkInPalseCnt );		//Ô‘¬A‰ñ“]”ŒvZ—p’è”•ÏX
+			setLnkInPalseCnt( &outLnkInPalseCnt );		//è»Šé€Ÿã€å›è»¢æ•°è¨ˆç®—ç”¨å®šæ•°å¤‰æ›´
 		}
 		break;
 	}
 }
 //********************************************************************************
-// EEPROMƒf[ƒ^“K—p
+// EEPROMãƒ‡ãƒ¼ã‚¿é©ç”¨
 //********************************************************************************
 static void apryEep( void )
 {
@@ -114,13 +114,13 @@ static void apryEep( void )
 	inAplDataEep	= getAplDataEep();
 
 	if( inAplDataEep->read == APL_DATA_EEP_STATE_READED){
-		//“ÇÏ‚İ‚È‚ç”½‰f
+		//èª­è¾¼æ¸ˆã¿ãªã‚‰åæ˜ 
 		aplCtrlSet.palseSpeed	= inAplDataEep->palseSpeed;
 		aplCtrlSet.palseRev		= inAplDataEep->palseRev;
 	}else if( inAplDataEep->read == APL_DATA_EEP_STATE_SUMERROR){
-		//SUMƒGƒ‰[‚ÍƒfƒtƒHƒ‹ƒg’l“Ç
+		//SUMã‚¨ãƒ©ãƒ¼æ™‚ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤èª­è¾¼
 		aplCtrlSet.palseSpeed	= eepDefault[PALSE_SPEED];
 		aplCtrlSet.palseRev		= eepDefault[PALSE_REV];
-		setLnkOutEep();	//EEPROM‘‚İ—v‹
+		setLnkOutEep();	//EEPROMæ›¸è¾¼ã¿è¦æ±‚
 	}
 }

@@ -17,7 +17,7 @@ static TEST_STATE		testStateRev;
 static unsigned char makeTestDataSpeed( void );
 static unsigned short makeTestDataRev( void );
 //********************************************************************************
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************
 void initAplComData( void )
 {
@@ -30,7 +30,7 @@ void initAplComData( void )
 	aplComData.vtc			= 0;
 }
 //********************************************************************************
-// ƒƒCƒ“ˆ—
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 //********************************************************************************
 void aplComDataMain( void )
 {
@@ -38,17 +38,17 @@ void aplComDataMain( void )
 	APL_DATA_CAR_SW		*inAplDataCarSw;
 	APL_CTRL_SET		*inAplCtrlSet;
 
-	//aplData‚æ‚èƒf[ƒ^æ“¾
+	//aplDataã‚ˆã‚Šãƒ‡ãƒ¼ã‚¿å–å¾—
 	inAplDataPalse	= getAplDataPalse();
 	inAplDataCarSw	= getAplDataCarSw();
 	inAplCtrlSet	= getAplCtrlSet();
 
 	if( inAplDataCarSw->test == APL_DATA_SW_ON ){
-		//ƒeƒXƒgƒ‚[ƒh
+		//ãƒ†ã‚¹ãƒˆãƒ¢ãƒ¼ãƒ‰
 		aplComData.speed	= makeTestDataSpeed();
 		aplComData.rev		= makeTestDataRev();
 	}else{
-		//’Êíƒ‚[ƒh
+		//é€šå¸¸ãƒ¢ãƒ¼ãƒ‰
 		aplComData.speed	= inAplDataPalse->speed;
 		aplComData.rev		= inAplDataPalse->rev;
 	}
@@ -78,7 +78,7 @@ void aplComDataMain( void )
 	}
 }
 //********************************************************************************
-// LNK‚ªæ“¾
+// LNKãŒå–å¾—
 //********************************************************************************
 APL_COM_DATA *getAplComData( void )
 {
@@ -86,7 +86,7 @@ APL_COM_DATA *getAplComData( void )
 }
 
 //********************************************************************************
-// Ô‘¬ƒeƒXƒgƒf[ƒ^
+// è»Šé€Ÿãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
 //********************************************************************************
 static unsigned char makeTestDataSpeed( void )
 {
@@ -96,19 +96,19 @@ static unsigned char makeTestDataSpeed( void )
 		testCycSpeed = 0;
 		if( testStateSpeed == TEST_STATE_UP ){
 			if( testSpeed < (SPEED_MAX-CHG_VAL_SPEED)){
-				//1ms‚É1rpm‘‰Á
+				//1msã«1rpmå¢—åŠ 
 				testSpeed += CHG_VAL_SPEED;
 			}else{
-				//ó‘Ô‚ğŒ¸­•ûŒü‚Ö
+				//çŠ¶æ…‹ã‚’æ¸›å°‘æ–¹å‘ã¸
 				testSpeed = SPEED_MAX;
 				testStateSpeed	= TEST_STATE_DOWN;
 			}
 		}else if( testStateSpeed == TEST_STATE_DOWN ){
 			if( testSpeed > (SPEED_MIN+CHG_VAL_SPEED)){
-				//1ms‚É1rpm‘‰Á
+				//1msã«1rpmå¢—åŠ 
 				testSpeed -= CHG_VAL_SPEED;
 			}else{
-				//ó‘Ô‚ğŒ¸­•ûŒü‚Ö
+				//çŠ¶æ…‹ã‚’æ¸›å°‘æ–¹å‘ã¸
 				testSpeed = SPEED_MIN;
 				testStateSpeed	= TEST_STATE_UP;
 			}
@@ -117,7 +117,7 @@ static unsigned char makeTestDataSpeed( void )
 	return( testSpeed );
 }
 //********************************************************************************
-// ‰ñ“]”ƒeƒXƒgƒf[ƒ^
+// å›è»¢æ•°ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
 //********************************************************************************
 static unsigned short makeTestDataRev( void )
 {
@@ -127,19 +127,19 @@ static unsigned short makeTestDataRev( void )
 		testCycRev = 0;
 		if( testStateRev == TEST_STATE_UP ){
 			if( testRev < (REV_MAX-CHG_VAL_REV)){
-				//1ms‚É1rpm‘‰Á
+				//1msã«1rpmå¢—åŠ 
 				testRev += CHG_VAL_REV;
 			}else{
-				//ó‘Ô‚ğŒ¸­•ûŒü‚Ö
+				//çŠ¶æ…‹ã‚’æ¸›å°‘æ–¹å‘ã¸
 				testRev = REV_MAX;
 				testStateRev	= TEST_STATE_DOWN;
 			}
 		}else if( testStateRev == TEST_STATE_DOWN ){
 			if( testRev > (REV_MIN+CHG_VAL_REV)){
-				//1ms‚É1rpm‘‰Á
+				//1msã«1rpmå¢—åŠ 
 				testRev -= CHG_VAL_REV;
 			}else{
-				//ó‘Ô‚ğŒ¸­•ûŒü‚Ö
+				//çŠ¶æ…‹ã‚’æ¸›å°‘æ–¹å‘ã¸
 				testRev = REV_MIN;
 				testStateRev	= TEST_STATE_UP;
 			}

@@ -6,7 +6,7 @@ typedef enum{
 }SETTING_ITEM;
 
 unsigned char eepDefault[SETTING_ITEM_MAX] = {
-	4,		//パルス仕様車速
-	4,		//パルス仕様回転数(気筒数
+	4,		//繝代Ν繧ｹ莉墓ｧ倩ｻ企�
+	4,		//繝代Ν繧ｹ莉墓ｧ伜屓霆｢謨ｰ(豌礼ｭ呈焚
 };
 

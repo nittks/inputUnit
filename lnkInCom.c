@@ -8,11 +8,11 @@
 #include "aplData.h"
 #include "drvUart.h"
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void initLnkInCom( void )
 {
 }
-//ƒƒCƒ“ˆ—
+//ãƒ¡ã‚¤ãƒ³å‡¦ç†
 void lnkInComMain( void )
 {
 	DRV_UART_RX		*inDrvUartRx;
@@ -31,7 +31,7 @@ void lnkInComMain( void )
 		}
 		
 		if( sum != inDrvUartRx->rxData[inDrvUartRx->rxDataNum-1]){
-			//SUMƒGƒ‰[Bˆ—–³‚µ
+			//SUMã‚¨ãƒ©ãƒ¼ã€‚å‡¦ç†ç„¡ã—
 		}else{
 			outAplDataCom.chReq		= true;
 			outAplDataCom.palseSpeed	= inDrvUartRx->rxData[UART_NO_PALSE_SET] & 0x0F;

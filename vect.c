@@ -9,37 +9,37 @@
 #include "drvInTimer.h"
 #include "timer.h"
 
-#define INT_CNT_MAX	((unsigned char)125)	//8us*125=1ms–ˆŠ„‚è‚İ
+#define INT_CNT_MAX	((unsigned char)125)	//8us*125=1msæ¯å‰²ã‚Šè¾¼ã¿
 
-ISR(TIMER0_COMPA_vect)	//ƒ^ƒCƒ}Š„‚è‚İ(ƒVƒXƒeƒ€ƒ^ƒCƒ}
+ISR(TIMER0_COMPA_vect)	//ã‚¿ã‚¤ãƒå‰²ã‚Šè¾¼ã¿(ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒ
 {
 	interMainTask();
 }
-ISR(USART_RX_vect)		//UARTóMŠ„‚İ
+ISR(USART_RX_vect)		//UARTå—ä¿¡å‰²è¾¼ã¿
 {
 	interGetUartRxData();
 }
 
-ISR(USART_UDRE_vect)	//UART DataRegisterEmpty‘—MƒŒƒWƒXƒ^‹óŠ„‚İ
+ISR(USART_UDRE_vect)	//UART DataRegisterEmptyé€ä¿¡ãƒ¬ã‚¸ã‚¹ã‚¿ç©ºå‰²è¾¼ã¿
 {
 	interSetUartTxData();
 }
-ISR( USART_TX_vect ){	//UART‘—MŠ®—¹Š„‚İ
+ISR( USART_TX_vect ){	//UARTé€ä¿¡å®Œäº†å‰²è¾¼ã¿
 	interUartTxFin();
 }
 
-ISR(TIMER1_OVF_vect)	//ƒ^ƒCƒ}ƒI[ƒo[ƒtƒ[(ƒpƒ‹ƒXŠÔŠuŒv‘ªƒ^ƒCƒ}
+ISR(TIMER1_OVF_vect)	//ã‚¿ã‚¤ãƒã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼(ãƒ‘ãƒ«ã‚¹é–“éš”è¨ˆæ¸¬ã‚¿ã‚¤ãƒ
 {
 	interDrvInTimerOverflow();
 }
-ISR(INT0_vect)			//INT0ƒ|[ƒg•Ï‰»Š„‚è‚İ
+ISR(INT0_vect)			//INT0ãƒãƒ¼ãƒˆå¤‰åŒ–å‰²ã‚Šè¾¼ã¿
 {
 	interPosEdgeSpeed();
 }
-ISR(INT1_vect)			//INT1ƒ|[ƒg•Ï‰»Š„‚è‚İ
+ISR(INT1_vect)			//INT1ãƒãƒ¼ãƒˆå¤‰åŒ–å‰²ã‚Šè¾¼ã¿
 {
 	interPosEdgeRev();
 }
-ISR(EE_READY_vect){		//EEPROMƒAƒNƒZƒX‰Â”\Š„‚İ
+ISR(EE_READY_vect){		//EEPROMã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½å‰²è¾¼ã¿
 	interEepRedy();
 }

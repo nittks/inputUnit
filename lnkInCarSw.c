@@ -6,11 +6,11 @@
 #include "drvInCarSw.h"
 #include "aplData.h"
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void initLnkInCarSw( void )
 {
 }
-//ƒƒCƒ“ˆ—
+//ãƒ¡ã‚¤ãƒ³å‡¦ç†
 void lnkInCarSwMain( void )
 {
 	DRV_IN_CAR_SW	*inDrvInCarSw;

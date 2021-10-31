@@ -7,11 +7,11 @@
 
 #include "drvInPalseCnt.h"
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void initLnkOutCom( void )
 {
 }
-//ƒƒCƒ“ˆ—
+//ãƒ¡ã‚¤ãƒ³å‡¦ç†
 void lnkOutComMain( void )
 {
 	APL_COM_DATA		*inAplComData=0;
@@ -22,13 +22,13 @@ void lnkOutComMain( void )
 
 	inAplComData = getAplComData();
 
-	//’ÊMUARTo—Íƒf[ƒ^ƒZƒbƒg
+	//é€šä¿¡UARTå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆ
 	i=0;
 	outDrvUartTx.txData[i++]	= UART_TX_ID;
 	outDrvUartTx.txData[i++]	= UART_TX_LENGTH;
 	outDrvUartTx.txData[i++]	= inAplComData->speed;
-	outDrvUartTx.txData[i++]	= inAplComData->rev >> 8;		//ãˆÊ
-	outDrvUartTx.txData[i++]	= inAplComData->rev & 0x00FF;	//‰ºˆÊ
+	outDrvUartTx.txData[i++]	= inAplComData->rev >> 8;		//ä¸Šä½
+	outDrvUartTx.txData[i++]	= inAplComData->rev & 0x00FF;	//ä¸‹ä½
 	outDrvUartTx.txData[i++]	= (inAplComData->palseRev << 4 ) | (inAplComData->palseSpeed&0x0F) ;
 	outDrvUartTx.txData[i++]	=	(inAplComData->vtc << 3) | 
 									(inAplComData->ill << 2) |
@@ -43,7 +43,7 @@ void lnkOutComMain( void )
 	outDrvUartTx.txData[i]	= sum;
 	outDrvUartTx.txDataNum	= UART_TX_LENGTH;
 
-	//ƒf[ƒ^”
+	//ãƒ‡ãƒ¼ã‚¿æ•°
 	outDrvUartTx.txDataNum	= UART_TX_LENGTH;
 
 	if( timercnt >= 3 ){

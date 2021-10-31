@@ -9,7 +9,7 @@
 LNK_IN_PALSE_CNT	lnkInPalseCnt;
 
 //********************************************************************************
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************
 void initLnkInPalseCnt( void )
 {
@@ -17,7 +17,7 @@ void initLnkInPalseCnt( void )
 	lnkInPalseCnt.palseRev		= INIT_PALSE_REV; 
 }
 //********************************************************************************
-// Ý’è’lƒZƒbƒg
+// è¨­å®šå€¤ã‚»ãƒƒãƒˆ
 //********************************************************************************
 void setLnkInPalseCnt( LNK_IN_PALSE_CNT *inP )
 {
@@ -25,7 +25,7 @@ void setLnkInPalseCnt( LNK_IN_PALSE_CNT *inP )
 	lnkInPalseCnt.palseRev		= SETTING_PALSE_REV[inP->palseRev];
 }
 //********************************************************************************
-// ƒƒCƒ“ˆ—
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 //********************************************************************************
 void lnkInPalseCntMain( void )
 {
@@ -38,18 +38,18 @@ void lnkInPalseCntMain( void )
 	
 	drvInPalseCnt	= getDrvInPalesCnt();
 
-	//ŽÔ‘¬ŒvŽZ
+	//è»Šé€Ÿè¨ˆç®—
 	if( drvInPalseCnt->cycCnt[NO_SPEED] == 0 ){
-		aplDataPalse.speed = 0;		//–¢Œv‘ª
+		aplDataPalse.speed = 0;		//æœªè¨ˆæ¸¬
 	}else{
-		//ŽüŠúU‚ê‚É‚æ‚èAŽÔ‘¬‚Ì‹«ŠE‚ðŒ×‚­‚Ì‚ÅŽlŽÌŒÜ“ü‚µU‚ê‚ð—}‚¦‚é
+		//å‘¨æœŸæŒ¯ã‚Œã«ã‚ˆã‚Šã€è»Šé€Ÿã®å¢ƒç•Œã‚’è·¨ãã®ã§å››æ¨äº”å…¥ã—æŒ¯ã‚Œã‚’æŠ‘ãˆã‚‹
 //		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cycCnt[NO_SPEED])/(N1*N2);
 		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cycCnt[NO_SPEED])/(lnkInPalseCnt.palseSpeed*N2);
 		tmpCalcSpeed	= (tmpCalcSpeed + ROUND5) /ROUND_DIGIT;
 		aplDataPalse.speed	= tmpCalcSpeed;
 	}
 	
-	//‰ñ“]”ŒvŽZ
+	//å›žè»¢æ•°è¨ˆç®—
 	if( drvInPalseCnt->cycCnt[NO_REV] == 0 ){
 		aplDataPalse.rev = 0;
 	}else{

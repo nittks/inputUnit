@@ -1,11 +1,11 @@
 
 //************************************************************
-// ŠO•”Š„‚İƒŒƒWƒXƒ^ŠÖŒW
+// å¤–éƒ¨å‰²è¾¼ã¿ãƒ¬ã‚¸ã‚¹ã‚¿é–¢ä¿‚
 //************************************************************
-#define		REG_ISC0		(3)		//—§ã‚è
-#define		REG_ISC1		(3)		//—§ã‚è
-#define		REG_INT0		(1)		//‹–‰Â
-#define		REG_INT1		(1)		//‹–‰Â
+#define		REG_ISC0		(3)		//ç«‹ä¸Šã‚Šæ™‚
+#define		REG_ISC1		(3)		//ç«‹ä¸Šã‚Šæ™‚
+#define		REG_INT0		(1)		//è¨±å¯
+#define		REG_INT1		(1)		//è¨±å¯
 
 #define		SET_EICRA		(EICRA = ((REG_ISC0<<ISC00) | (REG_ISC1<<ISC10)))
 #define		SET_EIMSK		(EIMSK = ((REG_INT0<<INT0) | (REG_INT1<<INT1)))

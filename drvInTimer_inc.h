@@ -1,4 +1,4 @@
-//CS0 ƒNƒƒbƒN‘I‘ð0
+//CS0 ã‚¯ãƒ­ãƒƒã‚¯é¸æŠž0
 enum{
 	CS0_STOP	= 0,
 	CS0_DIV_NO,
@@ -10,7 +10,7 @@ enum{
 	CS0_DIV_T0UP
 };
 
-//WGM0 ”gŒ`¶¬Ží•Ê
+//WGM0 æ³¢å½¢ç”Ÿæˆç¨®åˆ¥
 enum{
 	WGM_NORMAL	=0,
 	WGM_8BIT_PHASE_BASE_PWM,
@@ -22,7 +22,7 @@ enum{
 	WGM_HIGHT_SPEED_PWM
 };
 
-//COM0A ”äŠrAo—Í‘I‘ð
+//COM0A æ¯”è¼ƒAå‡ºåŠ›é¸æŠž
 enum{
 	COM0A_NORMAL	= 0,
 	COM0A_COMP_TOGLE,
@@ -30,23 +30,23 @@ enum{
 	COM0A_COMP_HIGH
 };
 #define	TIMER_REG_LSB		1		//1cnt=10us
-#define	TIMER_REG_MAX		0xFFFF	//60ms–ˆAƒI[ƒo[ƒtƒ[Š„‚èž‚Ý‚ð“ü‚ê‚é
+#define	TIMER_REG_MAX		0xFFFF	//60msæ¯Žã€ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼å‰²ã‚Šè¾¼ã¿ã‚’å…¥ã‚Œã‚‹
 
-//ƒŒƒWƒXƒ^Ý’è
-#define		REG_COM1A	(0b00)		//•W€ƒ|[ƒg“®ì(OC1AØ’f)
-#define		REG_WGM		(0b0000)	//no.1 •W€“®ì
-#define		REG_CS		(0x2)		//clkI/O(‘O’u•ªŽü‚È‚µ)10us’PˆÊ‚Å‚ÌƒJƒEƒ“ƒg‚ª•K—v‚Ì‚½‚ßA1Mhz(1us)ƒNƒƒbƒN‚ðŽg—p
-#define		REG_OCR1A	(TIMER_REG_MAX)	//TOP’lÝ’è
+//ãƒ¬ã‚¸ã‚¹ã‚¿è¨­å®š
+#define		REG_COM1A	(0b00)		//æ¨™æº–ãƒãƒ¼ãƒˆå‹•ä½œ(OC1Aåˆ‡æ–­)
+#define		REG_WGM		(0b0000)	//no.1 æ¨™æº–å‹•ä½œ
+#define		REG_CS		(0x2)		//clkI/O(å‰ç½®åˆ†å‘¨ãªã—)10uså˜ä½ã§ã®ã‚«ã‚¦ãƒ³ãƒˆãŒå¿…è¦ã®ãŸã‚ã€1Mhz(1us)ã‚¯ãƒ­ãƒƒã‚¯ã‚’ä½¿ç”¨
+#define		REG_OCR1A	(TIMER_REG_MAX)	//TOPå€¤è¨­å®š
 
-//ƒŒƒWƒXƒ^ƒZƒbƒg—p
-#define		SET_TCCR1A	(TCCR1A = ( REG_COM1A << COM1A0 ) | ((REG_WGM & 0x03) << WGM00))	//WGM00,01‚Ì‚Ý
+//ãƒ¬ã‚¸ã‚¹ã‚¿ã‚»ãƒƒãƒˆç”¨
+#define		SET_TCCR1A	(TCCR1A = ( REG_COM1A << COM1A0 ) | ((REG_WGM & 0x03) << WGM00))	//WGM00,01ã®ã¿
 #define		SET_TCCR1B	(TCCR1B = (( REG_WGM & 0x03 ) << WGM12))
-#define		SET_TCCR1C	()	//ƒZƒbƒg’l–³‚µ
+#define		SET_TCCR1C	()	//ã‚»ãƒƒãƒˆå€¤ç„¡ã—
 #define		SET_OCR1A	(OCR1A = REG_OCR1A)
-#define		SET_TIMSK	(TIMSK = (1 << OCIE1A ))		//ƒ^ƒCƒ}/ƒJƒEƒ“ƒ^1”äŠrAŠ„‚èž‚Ý‹–‰Â
+#define		SET_TIMSK	(TIMSK = (1 << OCIE1A ))		//ã‚¿ã‚¤ãƒž/ã‚«ã‚¦ãƒ³ã‚¿1æ¯”è¼ƒAå‰²ã‚Šè¾¼ã¿è¨±å¯
 
-#define		START_TIMER_1A		(TCCR1B |= (  REG_CS << CS10))	//ƒ^ƒCƒ}ƒXƒ^[ƒg
-#define		STOP_TIMER_1A		(TCCR1B &= (~(REG_CS << CS10)))	//ƒ^ƒCƒ}ƒXƒgƒbƒv
+#define		START_TIMER_1A		(TCCR1B |= (  REG_CS << CS10))	//ã‚¿ã‚¤ãƒžã‚¹ã‚¿ãƒ¼ãƒˆ
+#define		STOP_TIMER_1A		(TCCR1B &= (~(REG_CS << CS10)))	//ã‚¿ã‚¤ãƒžã‚¹ãƒˆãƒƒãƒ—
 #define		EN_INTER_OVERFLOW_1A	(TIMSK1 |= (1<<TOIE1))
 #define		DI_INTER_OVERFLOW_1A	(TIMSK1 &= ~(1<<TOIE1))
 
@@ -75,7 +75,7 @@ enum{
 	N1_PALSE_25 = 25
 };
 
-//ƒ^ƒCƒ}ƒJƒEƒ“ƒgÅ‘å’l(1km/h–¢–ž‚É‚È‚éŽüŠú)B0‡q/h(ƒI[ƒo[ƒtƒ[)”»’è—p
+//ã‚¿ã‚¤ãƒžã‚«ã‚¦ãƒ³ãƒˆæœ€å¤§å€¤(1km/hæœªæº€ã«ãªã‚‹å‘¨æœŸ)ã€‚0ãŽž/h(ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼)åˆ¤å®šç”¨
 const static unsigned long TIMER_CNT_MAX[N1_MAX] = {
 	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_04 * N2)),
 	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_08 * N2)),
@@ -92,7 +92,7 @@ typedef enum{
 }TIMER_STATE;
 
 typedef struct{
-	TIMER_STATE		state;		//ƒ^ƒCƒ}ó‘Ô
-	unsigned long	cnt;		//ƒ^ƒCƒ}ƒJƒEƒ“ƒg’l
-	unsigned short	startCnt;	//ƒ^ƒCƒ}“®ìŠJŽnŽžAƒ}ƒCƒRƒ“ƒ^ƒCƒ}ƒŒƒWƒXƒ^’l
+	TIMER_STATE		state;		//ã‚¿ã‚¤ãƒžçŠ¶æ…‹
+	unsigned long	cnt;		//ã‚¿ã‚¤ãƒžã‚«ã‚¦ãƒ³ãƒˆå€¤
+	unsigned short	startCnt;	//ã‚¿ã‚¤ãƒžå‹•ä½œé–‹å§‹æ™‚ã€ãƒžã‚¤ã‚³ãƒ³ã‚¿ã‚¤ãƒžãƒ¬ã‚¸ã‚¹ã‚¿å€¤
 }TIMER_INS;

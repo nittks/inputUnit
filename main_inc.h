@@ -4,7 +4,7 @@ typedef struct{
 	unsigned char	cycleTime;
 	void			(*func)(void);
 }TASK_PARAMETER;
-//CS0 ƒNƒƒbƒN‘I‘ğ0
+//CS0 ã‚¯ãƒ­ãƒƒã‚¯é¸æŠ0
 enum{
 	CS0_STOP	= 0,
 	CS0_DIV_NO,
@@ -16,7 +16,7 @@ enum{
 	CS0_DIV_T0UP
 };
 
-//WGM0 ”gŒ`¶¬í•Ê
+//WGM0 æ³¢å½¢ç”Ÿæˆç¨®åˆ¥
 enum{
 	WGM_NORMAL	=0,
 	WGM_8BIT_PHASE_BASE_PWM,
@@ -28,7 +28,7 @@ enum{
 	WGM_HIGHT_SPEED_PWM
 };
 
-//COM0A ”äŠrAo—Í‘I‘ğ
+//COM0A æ¯”è¼ƒAå‡ºåŠ›é¸æŠ
 enum{
 	COM0A_NORMAL	= 0,
 	COM0A_COMP_TOGLE,
@@ -36,18 +36,18 @@ enum{
 	COM0A_COMP_HIGH
 };
 
-//ƒŒƒWƒXƒ^İ’è
+//ãƒ¬ã‚¸ã‚¹ã‚¿è¨­å®š
 #define		REG_CS0		(CS0_DIV_64 & 0x07)	//3bit
 #define		REG_WGM		(WGM_COMP_CTC & 0x07)		//3bit
 #define		REG_COM0A	(COM0A_NORMAL & 0x03)	//2bit
-#define		TIMER_TOP	125		//8us*125=1ms,1ms–ˆŠ„‚è‚İ
-#define		REG_OCIE0A	1		//”äŠrˆê’vŠ„‚İ‹–‰Â
-#define		REG_CAL		88		//“à‘ŸƒNƒƒbƒNZ³(ƒfƒtƒHƒ‹ƒg88(0x58)
+#define		TIMER_TOP	125		//8us*125=1ms,1msæ¯å‰²ã‚Šè¾¼ã¿
+#define		REG_OCIE0A	1		//æ¯”è¼ƒä¸€è‡´å‰²è¾¼ã¿è¨±å¯
+#define		REG_CAL		88		//å†…è‡“ã‚¯ãƒ­ãƒƒã‚¯æ ¡æ­£(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ88(0x58)
 #define		PCINT		((1<<PCINT1) | (1<<PCINT0))
 
 
-//ƒŒƒWƒXƒ^ƒZƒbƒg—p
-#define		SET_TCCR0A	(( REG_COM0A << COM0A0 ) | ((REG_WGM & 0x03) << WGM00))	//WGM00,01‚Ì‚İ
+//ãƒ¬ã‚¸ã‚¹ã‚¿ã‚»ãƒƒãƒˆç”¨
+#define		SET_TCCR0A	(( REG_COM0A << COM0A0 ) | ((REG_WGM & 0x03) << WGM00))	//WGM00,01ã®ã¿
 #define		SET_TCCR0B	(( (REG_WGM >> 2) << WGM02) | (REG_CS0 << CS00))
 #define		SET_OCR0A	TIMER_TOP
 #define		SET_TIMSK0	(( REG_OCIE0A << OCIE0A))
@@ -69,7 +69,7 @@ enum{
 static void powerLed( void );
 
 TASK_PARAMETER	taskParameter[TASK_MAX]	={
-	//Œ»İŠÔ(ŠJnƒIƒtƒZƒbƒg) , üŠú , ŠÖ”–¼
+	//ç¾åœ¨æ™‚é–“(é–‹å§‹æ™‚ã‚ªãƒ•ã‚»ãƒƒãƒˆ) , å‘¨æœŸ , é–¢æ•°å
 	{	1,	10,	drvInMain	},
 	{	2,	10,	lnkInMain	},
 	{	3,	10,	aplMain		},

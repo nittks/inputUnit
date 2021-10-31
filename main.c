@@ -6,20 +6,20 @@
  */ 
 
 /*
-’èŠúƒ^ƒXƒN
+å®šæœŸã‚¿ã‚¹ã‚¯
 MPU		:ATtiny2313
-clock	:“à‘ 1MHz
+clock	:å†…è”µ1MHz
 */
 
 #define F_CPU 8000000UL
 #define CNTMAX		((unsigned char)7)	//8bit
-#define CNT100MSMAX	((unsigned char)200)	//5msŠ„‚è‚İ20‰ñ‚Å100ms
+#define CNT100MSMAX	((unsigned char)200)	//5mså‰²ã‚Šè¾¼ã¿20å›ã§100ms
 
-//UART’è‹`
-#define FOSC	8000000				/* MCU¸Û¯¸ü”g” */
-#define BAUD	9600				/* –Ú“IUSARTÎŞ°Ú°Ä‘¬“x */
-//#define BAUD	2400				/* –Ú“IUSARTÎŞ°Ú°Ä‘¬“x */
-#define MYUBRR	(FOSC/16/BAUD-1)	 /* –Ú“IUBRR’l */
+//UARTå®šç¾©
+#define FOSC	8000000				/* MCUã‚¯ãƒ­ãƒƒã‚¯å‘¨æ³¢æ•° */
+#define BAUD	9600				/* ç›®çš„USARTãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆé€Ÿåº¦ */
+//#define BAUD	2400				/* ç›®çš„USARTãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆé€Ÿåº¦ */
+#define MYUBRR	(FOSC/16/BAUD-1)	 /* ç›®çš„UBRRå€¤ */
 //#define  MYUBRR		26		// (1MHz / (16+2400)) -1
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -36,7 +36,7 @@ clock	:“à‘ 1MHz
 #include "main_inc.h"
 #include "main.h"
 
-#define INT_CNT_MAX	((unsigned char)125)	//8us*125=1ms–ˆŠ„‚è‚İ
+#define INT_CNT_MAX	((unsigned char)125)	//8us*125=1msæ¯å‰²ã‚Šè¾¼ã¿
 
 static void mainTask( void );
 static void initReg( void );
@@ -49,7 +49,7 @@ int main(void)
 
     while(1)
     {
-		//ˆ—‚µ‚½‚çƒXƒŠ[ƒvBƒ^ƒCƒ}Š„‚è‚İ‚Å‹N‚«‚½‚çÄ“xƒ‹[ƒvŠJn
+		//å‡¦ç†ã—ãŸã‚‰ã‚¹ãƒªãƒ¼ãƒ—ã€‚ã‚¿ã‚¤ãƒå‰²ã‚Šè¾¼ã¿ã§èµ·ããŸã‚‰å†åº¦ãƒ«ãƒ¼ãƒ—é–‹å§‹
 		mainTask();
 		set_sleep_mode(SLEEP_MODE_IDLE);
     }
@@ -76,15 +76,15 @@ static void mainTask( void )
 {
 	unsigned char	i;
 	
-	//ˆ—ƒ^ƒXƒNÀsŠÔƒ`ƒFƒbƒN
+	//å‡¦ç†ã‚¿ã‚¹ã‚¯å®Ÿè¡Œæ™‚é–“ãƒã‚§ãƒƒã‚¯
 	for( i=0; i<TASK_MAX ; i++){
-		if( taskParameter[i].cycleTime != 0 ){	//0‚Í–¢g—p
+		if( taskParameter[i].cycleTime != 0 ){	//0ã¯æœªä½¿ç”¨
 
-			//üŠúŠÔŒo‰ß‚µ‚Ä‚¢‚½‚çˆ—
+			//å‘¨æœŸæ™‚é–“çµŒéã—ã¦ã„ãŸã‚‰å‡¦ç†
 			if( taskParameter[i].currentTime <= 0 ){
-				//ƒŠƒZƒbƒg
+				//ãƒªã‚»ãƒƒãƒˆ
 				taskParameter[i].currentTime = taskParameter[i].cycleTime; 
-				//ƒ^ƒXƒNÀs
+				//ã‚¿ã‚¹ã‚¯å®Ÿè¡Œ
 				taskParameter[i].func();
 			}
 		}
@@ -92,16 +92,16 @@ static void mainTask( void )
 }
 
 
-//ƒƒCƒ“ƒ^ƒXƒN(ƒ^ƒCƒ}Š„‚è‚İ‹ì“®)
+//ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¹ã‚¯(ã‚¿ã‚¤ãƒå‰²ã‚Šè¾¼ã¿é§†å‹•)
 void interMainTask( void )
 {
 	unsigned char	i;
 	
-	//ˆ—ƒ^ƒXƒNÀsŠÔƒ`ƒFƒbƒN
+	//å‡¦ç†ã‚¿ã‚¹ã‚¯å®Ÿè¡Œæ™‚é–“ãƒã‚§ãƒƒã‚¯
 	for( i=0; i<TASK_MAX ; i++){
-		if( taskParameter[i].cycleTime != 0 ){	//0‚Í–¢g—p
+		if( taskParameter[i].cycleTime != 0 ){	//0ã¯æœªä½¿ç”¨
 
-			//10ms‚Å1ƒJƒEƒ“ƒgƒ_ƒEƒ“B
+			//10msã§1ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã€‚
 			if( taskParameter[i].currentTime > 0 ){
 				taskParameter[i].currentTime--;
 			}
@@ -113,39 +113,39 @@ void interMainTask( void )
 
 static void initReg(void)
 {
-	//I/Oİ’è
+	//I/Oè¨­å®š
 	DDRB	= 0x33;
 	DDRC	= 0xFF;
 	DDRD	= 0x83;
 
-	//‰Šúo—Í’lİ’è
+	//åˆæœŸå‡ºåŠ›å€¤è¨­å®š
 	PORTB	= 0x0C;
 	PORTC	= 0x00;
-//	PORTD	= 0xFF;		//“ü—Íƒvƒ‹ƒAƒbƒv
-	PORTD	= 0xF3;		//“ü—Íƒvƒ‹ƒAƒbƒv
+//	PORTD	= 0xFF;		//å…¥åŠ›ãƒ—ãƒ«ã‚¢ãƒƒãƒ—
+	PORTD	= 0xF3;		//å…¥åŠ›ãƒ—ãƒ«ã‚¢ãƒƒãƒ—
 
 
-	//ƒ^ƒCƒ}0ACTCAŠ„‚è‚İ—pA”äŠrAˆê’v‚ÅŠ„‚è‚İ
+	//ã‚¿ã‚¤ãƒ0ã€CTCã€å‰²ã‚Šè¾¼ã¿ç”¨ã€æ¯”è¼ƒAä¸€è‡´ã§å‰²ã‚Šè¾¼ã¿
 	TCCR0A	= SET_TCCR0A;
 	TCCR0B	= SET_TCCR0B;
 	OCR0A	= SET_OCR0A;
 	TIMSK0	= SET_TIMSK0;
-	OSCCAL	= SET_OSCCAL;	//ƒNƒƒbƒNZ³
+	OSCCAL	= SET_OSCCAL;	//ã‚¯ãƒ­ãƒƒã‚¯æ ¡æ­£
 	
-	USART_Init( MYUBRR );		//UARTƒŒƒWƒXƒ^‰Šú‰»
+	USART_Init( MYUBRR );		//UARTãƒ¬ã‚¸ã‚¹ã‚¿åˆæœŸåŒ–
 	
-	//Š„‚è‚İ‹–‰Â
+	//å‰²ã‚Šè¾¼ã¿è¨±å¯
 	sei();
 }
 
 static void USART_Init( unsigned short baud )
 {
-	UBRR0H	= (unsigned char)(baud>>8);	//ƒ{[ƒŒ[ƒgãˆÊ
-	UBRR0L	= (unsigned char) baud;		//ƒ{[ƒŒ[ƒg‰ºˆÊ
-	UCSR0C	= (1<<USBS0) | (3<<UCSZ00);	//’â~bit2bitAƒf[ƒ^ƒrƒbƒg’·8bit
-//	UCSRC	= (3<<UCSZ0);	//’â~bit1bitAƒf[ƒ^ƒrƒbƒg’·8bit
-//	UCSRB	= (1<<RXEN) | (1<<TXEN);	//óM‹–‰ÂA‘—M‹–‰Â
-//	UCSR0B	= (1<<TXEN0);	//óM‹–‰ÂA‘—M‹–‰Â
+	UBRR0H	= (unsigned char)(baud>>8);	//ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆä¸Šä½
+	UBRR0L	= (unsigned char) baud;		//ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆä¸‹ä½
+	UCSR0C	= (1<<USBS0) | (3<<UCSZ00);	//åœæ­¢bit2bitã€ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆé•·8bit
+//	UCSRC	= (3<<UCSZ0);	//åœæ­¢bit1bitã€ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆé•·8bit
+//	UCSRB	= (1<<RXEN) | (1<<TXEN);	//å—ä¿¡è¨±å¯ã€é€ä¿¡è¨±å¯
+//	UCSR0B	= (1<<TXEN0);	//å—ä¿¡è¨±å¯ã€é€ä¿¡è¨±å¯
 }
 static void powerLed( void )
 {

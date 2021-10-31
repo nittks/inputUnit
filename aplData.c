@@ -10,39 +10,39 @@ static APL_DATA_COM		aplDataCom;
 
 
 //********************************************************************************
-// èâä˙âª
+// ÂàùÊúüÂåñ
 //********************************************************************************
 void initAplData( void )
 {
 	aplDataPalse.speed	= 0;
 	aplDataPalse.rev	= 0;
 
-	//é‘ëÃêMçÜ
+	//Ëªä‰Ωì‰ø°Âè∑
 	aplDataCarSw.ig		= APL_DATA_SW_OFF;
 	aplDataCarSw.ill	= APL_DATA_SW_OFF;
 	aplDataCarSw.vtc	= APL_DATA_SW_OFF;
-	aplDataCarSw.test	= APL_DATA_SW_OFF;		//äÓî¬SW
+	aplDataCarSw.test	= APL_DATA_SW_OFF;		//Âü∫ÊùøSW
 
 	//EEPROM
 	aplDataEep.read			= APL_DATA_EEP_STATE_UNREAD;
 	aplDataEep.palseSpeed	= 4;
 	aplDataEep.palseRev		= 4;
 
-	//í êM
+	//ÈÄö‰ø°
 	aplDataCom.chReq		= false;
 	aplDataCom.palseSpeed	= 0;
 	aplDataCom.palseRev		= 0;
 
 }
 //********************************************************************************
-// ÉÅÉCÉìèàóù
+// „É°„Ç§„É≥Âá¶ÁêÜ
 //********************************************************************************
 void aplDataMain( void )
 {
-	//ñ≥Çµ
+	//ÁÑ°„Åó
 }
 //********************************************************************************
-// ÉpÉãÉXèÓïÒ
+// „Éë„É´„ÇπÊÉÖÂ†±
 //********************************************************************************
 void setAplDataPalse( APL_DATA_PALSE * inData )
 {
@@ -50,7 +50,7 @@ void setAplDataPalse( APL_DATA_PALSE * inData )
 	aplDataPalse.rev	= inData->rev;
 }
 //********************************************************************************
-// é‘ëÃÉXÉCÉbÉ`
+// Ëªä‰Ωì„Çπ„Ç§„ÉÉ„ÉÅ
 //********************************************************************************
 void setAplDataCarSw( APL_DATA_CAR_SW * inData )
 {
@@ -60,7 +60,7 @@ void setAplDataCarSw( APL_DATA_CAR_SW * inData )
 	aplDataCarSw.test	= inData->test;
 }
 //********************************************************************************
-// í êM
+// ÈÄö‰ø°
 //********************************************************************************
 void setAplDataCom( APL_DATA_COM * inData )
 {
@@ -79,21 +79,21 @@ void setAplDataEep( APL_DATA_EEP * inData )
 }
 
 //********************************************************************************
-// ÉpÉãÉXèÓïÒ
+// „Éë„É´„ÇπÊÉÖÂ†±
 //********************************************************************************
 APL_DATA_PALSE *getAplDataPalse( void )
 {
 	return( &aplDataPalse );
 }
 //********************************************************************************
-// é‘ëÃÉXÉCÉbÉ`
+// Ëªä‰Ωì„Çπ„Ç§„ÉÉ„ÉÅ
 //********************************************************************************
 APL_DATA_CAR_SW *getAplDataCarSw( void )
 {
 	return ( &aplDataCarSw );
 }
 //********************************************************************************
-// í êM
+// ÈÄö‰ø°
 //********************************************************************************
 APL_DATA_COM *getAplDataCom( void )
 {

@@ -1,8 +1,8 @@
 
-//ó‘Ô
+//çŠ¶æ…‹
 typedef enum{
-	APL_CTRL_STATE_BOOT,		//‹N“®‰‰ñ
-	APL_CTRL_STATE_NOMARL		//’Êí
+	APL_CTRL_STATE_BOOT,		//èµ·å‹•åˆå›
+	APL_CTRL_STATE_NOMARL		//é€šå¸¸
 }APL_CTRL_STATE;
 
 typedef struct {
@@ -10,8 +10,8 @@ typedef struct {
 }APL_CTRL;
 
 typedef struct {
-	unsigned char	palseSpeed;			//ƒpƒ‹ƒXd—lÔ‘¬   
-	unsigned char	palseRev;			//ƒpƒ‹ƒXd—l‰ñ“]” 
+	unsigned char	palseSpeed;			//ãƒ‘ãƒ«ã‚¹ä»•æ§˜è»Šé€Ÿ   
+	unsigned char	palseRev;			//ãƒ‘ãƒ«ã‚¹ä»•æ§˜å›è»¢æ•° 
 }APL_CTRL_SET;
 
 

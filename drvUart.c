@@ -2,7 +2,7 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include <avr/interrupt.h>  //Š„‚è‚İ‚ğg—p‚·‚é‚½‚ß
+#include <avr/interrupt.h>  //å‰²ã‚Šè¾¼ã¿ã‚’ä½¿ç”¨ã™ã‚‹ãŸã‚
 #include <string.h>
 #include <stdbool.h>
 
@@ -13,7 +13,7 @@
 
 static UART_STATE		uartState;
 //----------------------------------------
-// ‘—M
+// é€ä¿¡
 //----------------------------------------
 static DRV_UART_TX		drvUartTx;
 static unsigned char	txDataCnt;
@@ -21,23 +21,23 @@ static unsigned char	txCnt;
 static unsigned char	txReqFlag;
 
 //----------------------------------------
-// óM
+// å—ä¿¡
 //----------------------------------------
 static DRV_UART_RX		drvUartRx;
-static unsigned char	rxDataBuf[DRV_UART_RX_BUF_SIZE];			//óM’†ƒf[ƒ^‚ğ“ü‚ê‚Ä‚¢‚­ƒoƒbƒtƒ@
-static unsigned char	rxDataBufCnt;		//óM’†ƒf[ƒ^ƒoƒbƒtƒ@—pƒJƒEƒ“ƒ^
-static unsigned char	rxDataCnt;			//URATƒf[ƒ^’·ƒJƒEƒ“ƒ^
-static unsigned char	rxDataLen;			//UARTƒtƒŒ[ƒ€‚æ‚èæ“¾‚µ‚½ƒtƒŒ[ƒ€ƒŒƒ“ƒOƒX
-static unsigned char	rxFlag;				//óM—L–³
+static unsigned char	rxDataBuf[DRV_UART_RX_BUF_SIZE];			//å—ä¿¡ä¸­ãƒ‡ãƒ¼ã‚¿ã‚’å…¥ã‚Œã¦ã„ããƒãƒƒãƒ•ã‚¡
+static unsigned char	rxDataBufCnt;		//å—ä¿¡ä¸­ãƒ‡ãƒ¼ã‚¿ãƒãƒƒãƒ•ã‚¡ç”¨ã‚«ã‚¦ãƒ³ã‚¿
+static unsigned char	rxDataCnt;			//URATãƒ‡ãƒ¼ã‚¿é•·ã‚«ã‚¦ãƒ³ã‚¿
+static unsigned char	rxDataLen;			//UARTãƒ•ãƒ¬ãƒ¼ãƒ ã‚ˆã‚Šå–å¾—ã—ãŸãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ³ã‚°ã‚¹
+static unsigned char	rxFlag;				//å—ä¿¡æœ‰ç„¡
 
 //********************************************************************************//
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************//
 void initDrvUart( void )
 {
 	unsigned char	i;
 
-	//‘—M
+	//é€ä¿¡
 	for( i=0 ; i<DRV_UART_RX_BUF_SIZE; i++ ){
 		drvUartTx.txData[i]	= 0;
 	}
@@ -46,7 +46,7 @@ void initDrvUart( void )
 	txCnt		= 0;
 	txReqFlag	= false;
 
-	//óM
+	//å—ä¿¡
 	for( i=0 ; i<DRV_UART_RX_BUF_SIZE ; i++ ){
 		drvUartRx.rxData[i]	= 0;
 	}
@@ -56,19 +56,19 @@ void initDrvUart( void )
 	rxDataCnt		= 0;
 	rxDataLen		= 0;
 
-	//‘—óM‹–‰Â
+	//é€å—ä¿¡è¨±å¯
 	EN_UART_TX;
 	EN_UART_RX;
 //	UCSR0B	= (1<<TXEN0);
 
-	//óMŠ®—¹Š„‚İ‹–‰Â
+	//å—ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯
 	uartState		= UART_STATE_STANDBY;
 	EN_INTER_UART_RX_COMP;
 	RS485_RX;
 }
 
 //********************************************************************************//
-// ‘—MƒZƒbƒg
+// é€ä¿¡ã‚»ãƒƒãƒˆ
 //********************************************************************************//
 void setDrvUartTx( DRV_UART_TX *inP )
 {
@@ -76,55 +76,55 @@ void setDrvUartTx( DRV_UART_TX *inP )
 
 	if( uartState == UART_STATE_STANDBY ){
 		uartState = UART_STATE_TRANS;
-		RS485_TX;						//RS485ƒgƒ‰ƒ“ƒV[ƒo•ûŒüØ‘Ö
-		EN_INTER_UART_TX_REG_EMPTY;		//‘—Mƒoƒbƒtƒ@‹óŠ„‚İ‹–‰Â 
-		DI_INTER_UART_RX_COMP;			//óMŠ®—¹Š„‚İ‹Ö~
+		RS485_TX;						//RS485ãƒˆãƒ©ãƒ³ã‚·ãƒ¼ãƒæ–¹å‘åˆ‡æ›¿
+		EN_INTER_UART_TX_REG_EMPTY;		//é€ä¿¡ãƒãƒƒãƒ•ã‚¡ç©ºå‰²è¾¼ã¿è¨±å¯ 
+		DI_INTER_UART_RX_COMP;			//å—ä¿¡å®Œäº†å‰²è¾¼ã¿ç¦æ­¢
 	}
 }
 
 //********************************************************************************//
-// ‘—MƒŒƒWƒXƒ^‹óŠ„‚İ
+// é€ä¿¡ãƒ¬ã‚¸ã‚¹ã‚¿ç©ºå‰²è¾¼ã¿
 //********************************************************************************//
 void interSetUartTxData(void)
 {
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 
-	while( UART_REG_UDRE == UDRE_EMPTY ){	//‘—MƒŒƒWƒXƒ^‹ó‚ÌŠÔ‰ñ‚·
+	while( UART_REG_UDRE == UDRE_EMPTY ){	//é€ä¿¡ãƒ¬ã‚¸ã‚¹ã‚¿ç©ºã®é–“å›ã™
 		UDR0 = drvUartTx.txData[txDataCnt];
 		txDataCnt++;
 
-		if( txDataCnt >= drvUartTx.txDataNum ){	//‘Sƒf[ƒ^‘—MÏ‚İ
+		if( txDataCnt >= drvUartTx.txDataNum ){	//å…¨ãƒ‡ãƒ¼ã‚¿é€ä¿¡æ¸ˆã¿
 
 			txDataCnt = 0;
-			DI_INTER_UART_TX_REG_EMPTY;		//‘—MƒŒƒWƒXƒ^‹óŠ„‚İ‹Ö~
-			EN_INTER_UART_TX_FIN;			//‘—MŠ®—¹Š„‚İ‹–‰Â
+			DI_INTER_UART_TX_REG_EMPTY;		//é€ä¿¡ãƒ¬ã‚¸ã‚¹ã‚¿ç©ºå‰²è¾¼ã¿ç¦æ­¢
+			EN_INTER_UART_TX_FIN;			//é€ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯
 		}
 	}
-	sei();	//Š„‚İ‹–‰Â
+	sei();	//å‰²è¾¼ã¿è¨±å¯
 }
 
 //********************************************************************************//
-// ‘—MŠ®—¹Š„‚İ
+// é€ä¿¡å®Œäº†å‰²è¾¼ã¿
 //********************************************************************************//
 void interUartTxFin(void)
 {
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 
 	uartState = UART_STATE_STANDBY;
 
-	RS485_RX;						//RS485ƒgƒ‰ƒ“ƒV[ƒo‚ÍóMó‘Ô‚Å‘Ò‹@
-	EN_INTER_UART_RX_COMP;			//óMŠ®—¹Š„‚İ‹–‰Â
+	RS485_RX;						//RS485ãƒˆãƒ©ãƒ³ã‚·ãƒ¼ãƒã¯å—ä¿¡çŠ¶æ…‹ã§å¾…æ©Ÿ
+	EN_INTER_UART_RX_COMP;			//å—ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯
 
-	sei();	//Š„‚İ‹–‰Â
+	sei();	//å‰²è¾¼ã¿è¨±å¯
 }
 
 
 //********************************************************************************//
-// óMƒf[ƒ^æ“¾
+// å—ä¿¡ãƒ‡ãƒ¼ã‚¿å–å¾—
 //********************************************************************************//
 DRV_UART_RX *getDrvUartRx( void )
 {
-	//óM—L–³ƒtƒ‰ƒO‚ğŒöŠJ•Ï”‚Ö“ü‚êAƒNƒŠƒA‚·‚é
+	//å—ä¿¡æœ‰ç„¡ãƒ•ãƒ©ã‚°ã‚’å…¬é–‹å¤‰æ•°ã¸å…¥ã‚Œã€ã‚¯ãƒªã‚¢ã™ã‚‹
 	drvUartRx.rxFlag = rxFlag;
 	rxFlag = false;
 	return( &drvUartRx );
@@ -132,75 +132,75 @@ DRV_UART_RX *getDrvUartRx( void )
 
 
 //********************************************************************************//
-// UARTóMƒf[ƒ^Š„‚è‚İˆ—
+// UARTå—ä¿¡ãƒ‡ãƒ¼ã‚¿å‰²ã‚Šè¾¼ã¿å‡¦ç†
 //********************************************************************************//
 void interGetUartRxData(void)
 {
 	unsigned char	rxBuf;
 	unsigned char	timerCnt;
 
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 	while( UART_REG_RXC == RXC_IN_DATA){
 
-		//ƒŒƒWƒXƒ^‚æ‚èƒf[ƒ^æ“¾
+		//ãƒ¬ã‚¸ã‚¹ã‚¿ã‚ˆã‚Šãƒ‡ãƒ¼ã‚¿å–å¾—
 		rxBuf = UDR0;
 		
-		//ƒ^ƒCƒ}ƒI[ƒo[ƒtƒ[ or ƒtƒŒ[ƒ€ŠÔƒ^ƒCƒ€ƒAƒEƒg
-		//ƒtƒŒ[ƒ€‚ÌÅ‰(ID)‚©‚çóM‚µ‚È‚¨‚·
+		//ã‚¿ã‚¤ãƒã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ or ãƒ•ãƒ¬ãƒ¼ãƒ é–“ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+		//ãƒ•ãƒ¬ãƒ¼ãƒ ã®æœ€åˆ(ID)ã‹ã‚‰å—ä¿¡ã—ãªãŠã™
 		timerCnt	= getTimerCnt  ( TIMER_DRV_IN_UART_TIMEOUT );
 		if( (timerCnt == TIMER_OVER_FLOW ) || (timerCnt > UART_FRAME_TIMEOUT) ){
-			uartState = UART_STATE_STANDBY;	//‘Ò‹@’†‚ÖƒŠƒZƒbƒg
+			uartState = UART_STATE_STANDBY;	//å¾…æ©Ÿä¸­ã¸ãƒªã‚»ãƒƒãƒˆ
 			rxDataCnt=0;
 			rxDataBufCnt=0;
 		}else{
-			//óM‚µ‚½‚Ì‚ÅAƒ^ƒCƒ€ƒAƒEƒgƒ^ƒCƒ}ƒNƒŠƒA
+			//å—ä¿¡ã—ãŸã®ã§ã€ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚¿ã‚¤ãƒã‚¯ãƒªã‚¢
 			clearTimer( TIMER_DRV_IN_UART_TIMEOUT );
 		}
-		//ƒf[ƒ^ƒ`ƒFƒbƒN
+		//ãƒ‡ãƒ¼ã‚¿ãƒã‚§ãƒƒã‚¯
 		if( uartState == UART_STATE_STANDBY){
-			//ƒtƒŒ[ƒ€ID”»’è
-			if(( rxDataCnt == UART_DATAPOS_ID ) &&		//IDˆÊ’u
-			( rxBuf == UART_ID_SETTING )				//IDˆê’v
+			//ãƒ•ãƒ¬ãƒ¼ãƒ IDåˆ¤å®š
+			if(( rxDataCnt == UART_DATAPOS_ID ) &&		//IDä½ç½®
+			( rxBuf == UART_ID_SETTING )				//IDä¸€è‡´
 			){
-				uartState = UART_STATE_RECEIVE;	//óMó‘Ô‚ÖˆÚs
+				uartState = UART_STATE_RECEIVE;	//å—ä¿¡çŠ¶æ…‹ã¸ç§»è¡Œ
 				rxDataBuf[rxDataCnt] = rxBuf;
 				rxDataCnt++;
 			}
 		}else if( uartState == UART_STATE_RECEIVE){
-			//ƒf[ƒ^’·æ“¾
+			//ãƒ‡ãƒ¼ã‚¿é•·å–å¾—
 			if( rxDataCnt == UART_DATAPOS_LENGTH ){
-				rxDataLen = rxBuf;		//ƒtƒŒ[ƒ€’·‹L˜^
+				rxDataLen = rxBuf;		//ãƒ•ãƒ¬ãƒ¼ãƒ é•·è¨˜éŒ²
 				rxDataBuf[rxDataCnt] = rxBuf;
 				rxDataCnt++;
 
-			//’ÊíóM
+			//é€šå¸¸å—ä¿¡
 			}else{
 				rxDataBuf[rxDataCnt] = rxBuf;
 				rxDataCnt++;
 					
-				//óMŠ®—¹
+				//å—ä¿¡å®Œäº†
 				if( rxDataCnt >= rxDataLen ){
 					uartState = UART_STATE_STANDBY;
-					//Lnkæ“¾—p”z—ñ‚ÖƒRƒs[
+					//Lnkå–å¾—ç”¨é…åˆ—ã¸ã‚³ãƒ”ãƒ¼
 					memcpy( &drvUartRx.rxData[0] , &rxDataBuf[0] , rxDataCnt);
-					rxFlag = true;		//óM—L‚è
+					rxFlag = true;		//å—ä¿¡æœ‰ã‚Š
 					rxDataCnt = 0;
 				}
 			}
 		}else{
-			//æ‚è“¾‚È‚¢
+			//å–ã‚Šå¾—ãªã„
 		}
 	}
-	sei();	//Š„‚İ‹–‰Â
+	sei();	//å‰²è¾¼ã¿è¨±å¯
 
 }
 
 
 //********************************************************************************//
 // UART
-// ƒ{[ƒŒ[ƒg=9600bps(9.6b/ms
-// óMƒf[ƒ^=5byte
-// ƒXƒ^[ƒgbit=1,ƒXƒgƒbƒvbit=2bit,ƒf[ƒ^=8bit,ƒpƒŠƒeƒB=‚È‚µ¨1byte11bitƒf[ƒ^
-// 5x11=55bit‘—M‚·‚é
-// 55bit/9.6bpms = 5.72ms ¨1ƒtƒŒ[ƒ€•Ó‚èAÅ’á6msˆÈã‚Í•K—v
+// ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ=9600bps(9.6b/ms
+// å—ä¿¡ãƒ‡ãƒ¼ã‚¿=5byte
+// ã‚¹ã‚¿ãƒ¼ãƒˆbit=1,ã‚¹ãƒˆãƒƒãƒ—bit=2bit,ãƒ‡ãƒ¼ã‚¿=8bit,ãƒ‘ãƒªãƒ†ã‚£=ãªã—â†’1byte11bitãƒ‡ãƒ¼ã‚¿
+// 5x11=55bité€ä¿¡ã™ã‚‹
+// 55bit/9.6bpms = 5.72ms â†’1ãƒ•ãƒ¬ãƒ¼ãƒ è¾ºã‚Šã€æœ€ä½6msä»¥ä¸Šã¯å¿…è¦
 //********************************************************************************//

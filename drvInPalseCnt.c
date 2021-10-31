@@ -2,18 +2,18 @@
 #define F_CPU 1000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include <avr/interrupt.h>  //Š„‚è‚İ‚ğg—p‚·‚é‚½‚ß
+#include <avr/interrupt.h>  //å‰²ã‚Šè¾¼ã¿ã‚’ä½¿ç”¨ã™ã‚‹ãŸã‚
 
 #include "drvInPalseCnt_inc.h"
 #include "drvInPalseCnt.h"
 #include "drvIntimer.h"
 #include "hardware.h"
 
-//Lnk‚ªæ“¾‚·‚é
+//LnkãŒå–å¾—ã™ã‚‹
 static DRV_IN_PALSE_CNT	drvInPulseCnt;
 
 //********************************************************************************
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************
 void initDrvInPalseCnt( void )
 {
@@ -28,7 +28,7 @@ void initDrvInPalseCnt( void )
 }
 
 //********************************************************************************
-// LINK‚ªæ“¾
+// LINKãŒå–å¾—
 //********************************************************************************
 DRV_IN_PALSE_CNT *getDrvInPalesCnt( void )
 {
@@ -43,42 +43,42 @@ void drvInPalseCntMain( void )
 	
 	DRV_IN_TIMER		inDrvInTimer;
 
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 
-	//Ô‘¬
+	//è»Šé€Ÿ
 	inDrvInTimer	= getDrvInTimerState( DRV_IN_TIMER_ID_SPEED );
 
 	if( inDrvInTimer.state == DRV_IN_TIMER_STATE_OVERFLOW ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_SPEED] = 0;
-		stopTimer( DRV_IN_TIMER_ID_SPEED );	//ƒ^ƒCƒ}’â~
+		stopTimer( DRV_IN_TIMER_ID_SPEED );	//ã‚¿ã‚¤ãƒåœæ­¢
 	}
 
-	//‰ñ“]”
+	//å›è»¢æ•°
 	inDrvInTimer	= getDrvInTimerState( DRV_IN_TIMER_ID_REV );
 	
 	if( inDrvInTimer.state == DRV_IN_TIMER_STATE_OVERFLOW ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_REV] = 0;
-		stopDrvInTimer( DRV_IN_TIMER_ID_REV );	//ƒ^ƒCƒ}’â~
+		stopDrvInTimer( DRV_IN_TIMER_ID_REV );	//ã‚¿ã‚¤ãƒåœæ­¢
 	}
 
 	sei();
 	
 }
 //********************************************************************************
-// ƒ|[ƒg•Ï‰»Š„‚è‚İ(Ô‘¬
+// ãƒãƒ¼ãƒˆå¤‰åŒ–å‰²ã‚Šè¾¼ã¿(è»Šé€Ÿ
 //********************************************************************************
 void interPosEdgeSpeed( void )
 {
 	DRV_IN_TIMER		inDrvInTimer;
 	inDrvInTimer	= getDrvInTimer( DRV_IN_TIMER_ID_SPEED );
 
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 
 	if( inDrvInTimer.state == DRV_IN_TIMER_STATE_START ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_SPEED] = inDrvInTimer.cnt;
 	}else if( inDrvInTimer.state == DRV_IN_TIMER_STATE_OVERFLOW ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_SPEED] = 0;
-		startDrvInTimer( DRV_IN_TIMER_ID_SPEED );	//ƒI[ƒo[ƒtƒ[ó‘ÔƒNƒŠƒAAÄŠJ
+		startDrvInTimer( DRV_IN_TIMER_ID_SPEED );	//ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼çŠ¶æ…‹ã‚¯ãƒªã‚¢ã€å†é–‹
 	}else{
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_SPEED] = 123;
 		startDrvInTimer( DRV_IN_TIMER_ID_SPEED );
@@ -88,20 +88,20 @@ void interPosEdgeSpeed( void )
 }
 
 //********************************************************************************
-// ƒ|[ƒg•Ï‰»Š„‚è‚İ(‰ñ“]”
+// ãƒãƒ¼ãƒˆå¤‰åŒ–å‰²ã‚Šè¾¼ã¿(å›è»¢æ•°
 //********************************************************************************
 void interPosEdgeRev( void )
 {
 	DRV_IN_TIMER		inDrvInTimer;
 	inDrvInTimer	= getDrvInTimer( DRV_IN_TIMER_ID_REV );
 
-	cli();	//Š„‚è‚İ‹Ö~
+	cli();	//å‰²ã‚Šè¾¼ã¿ç¦æ­¢
 
 	if( inDrvInTimer.state == DRV_IN_TIMER_STATE_START ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_REV] = inDrvInTimer.cnt;
 	}else if( inDrvInTimer.state == DRV_IN_TIMER_STATE_OVERFLOW ){
 		drvInPulseCnt.cycCnt[DRV_IN_PALSE_CNT_NO_REV] = 0;
-		startDrvInTimer( DRV_IN_TIMER_ID_REV );	//ƒI[ƒo[ƒtƒ[ó‘ÔƒNƒŠƒAAÄŠJ
+		startDrvInTimer( DRV_IN_TIMER_ID_REV );	//ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼çŠ¶æ…‹ã‚¯ãƒªã‚¢ã€å†é–‹
 	}else{
 		startDrvInTimer( DRV_IN_TIMER_ID_REV );
 	}

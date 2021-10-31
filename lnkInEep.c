@@ -8,17 +8,17 @@
 #include "aplData.h"
 #include "drvEep.h"
 
-static unsigned char	eepReadFlag;		//‰‰ñEEPƒf[ƒ^”½‰fÏ‚İƒtƒ‰ƒO
+static unsigned char	eepReadFlag;		//åˆå›EEPãƒ‡ãƒ¼ã‚¿åæ˜ æ¸ˆã¿ãƒ•ãƒ©ã‚°
 
 //********************************************************************************
-// ‰Šú‰»
+// åˆæœŸåŒ–
 //********************************************************************************
 void initLnkInEep( void )
 {
 	eepReadFlag = false;
 }
 //********************************************************************************
-// ƒƒCƒ“ˆ—
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 //********************************************************************************
 void lnkInEepMain( void )
 {
@@ -27,25 +27,25 @@ void lnkInEepMain( void )
 	unsigned char	i;
 	unsigned char	sum;
 
-	//SW“ü—Íƒhƒ‰ƒCƒoƒf[ƒ^æ“¾
+	//SWå…¥åŠ›ãƒ‰ãƒ©ã‚¤ãƒãƒ‡ãƒ¼ã‚¿å–å¾—
 	inDrvEep = getDrvEep();
 
-	if( eepReadFlag == false ){		//–¢”½‰f
+	if( eepReadFlag == false ){		//æœªåæ˜ 
 		if( inDrvEep->readState == DRV_EEP_READ_STATE_READED ){
-			eepReadFlag = true;		//”½‰fÏ‚İ
+			eepReadFlag = true;		//åæ˜ æ¸ˆã¿
 
 			sum = 0;
-			for( i=0 ; i<EEP_DATA_MAX-1 ; i++ ){	//SUM‚ğœ‚­ƒf[ƒ^
+			for( i=0 ; i<EEP_DATA_MAX-1 ; i++ ){	//SUMã‚’é™¤ããƒ‡ãƒ¼ã‚¿
 				sum += inDrvEep->val[i];
 			}
-			//SUM³í
+			//SUMæ­£å¸¸
 			if( sum == inDrvEep->val[DRV_EEP_MAP_SUM] ){
 				i=0;
 				aplDataEep.read				= APL_DATA_EEP_STATE_READED;
 				aplDataEep.palseSpeed		= inDrvEep->val[i++];
 				aplDataEep.palseRev			= inDrvEep->val[i++];
 				
-				//”ÍˆÍƒuƒƒbƒN
+				//ç¯„å›²ãƒ–ãƒ­ãƒƒã‚¯
 				if( (aplDataEep.palseSpeed < PALSE_SPEED_MIN ) ||
 				(PALSE_SPEED_MAX < aplDataEep.palseSpeed) )
 				{

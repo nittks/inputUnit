@@ -1,11 +1,11 @@
 
 //----------------------------------------
-// ‘S‘Ì
+// å…¨ä½“
 //----------------------------------------
 typedef enum{
-	UART_STATE_STANDBY,		//ŽóM’âŽ~(I—¹
-	UART_STATE_TRANS,		//‘—M’†
-	UART_STATE_RECEIVE		//ŽóM’†
+	UART_STATE_STANDBY,		//å—ä¿¡åœæ­¢(çµ‚äº†
+	UART_STATE_TRANS,		//é€ä¿¡ä¸­
+	UART_STATE_RECEIVE		//å—ä¿¡ä¸­
 }UART_STATE;
 
 #define RS485PORT	PORTC
@@ -14,34 +14,34 @@ typedef enum{
 #define RS485_TX	(RS485PORT |=  (1<<RS485BIT))
 
 //----------------------------------------
-// ‘—M
+// é€ä¿¡
 //----------------------------------------
 #define UART_REG_UDRE	(UCSR0A & (1<<UDRIE0))
 #define UDRE_EMPTY		(1<<UDRIE0)
 #define UDRE_NOEMPTY	(0<<UDRIE0)
-#define DI_UART_TX						(UCSR0B = UCSR0B & (~(1<<TXEN0)))	//‘—M‹ÖŽ~
-#define EN_UART_TX						(UCSR0B = UCSR0B | ( (1<<TXEN0)))	//‘—M‹–‰Â
-#define DI_INTER_UART_TX_REG_EMPTY		(UCSR0B = UCSR0B & (~(1<<UDRIE0)))	//‘—Mƒoƒbƒtƒ@‹óŠ„ž‚Ý‹ÖŽ~
-#define EN_INTER_UART_TX_REG_EMPTY		(UCSR0B = UCSR0B | ( (1<<UDRIE0)))	//‘—Mƒoƒbƒtƒ@‹óŠ„ž‚Ý‹–‰Â
-#define DI_INTER_UART_TX_FIN			(UCSR0B &= (~(1<<TXCIE0)))		//‘—MŠ®—¹Š„ž‚Ý‹–‰Â
-#define EN_INTER_UART_TX_FIN			(UCSR0B |= ( (1<<TXCIE0)))		//‘—MŠ®—¹Š„ž‚Ý‹–‰Â
+#define DI_UART_TX						(UCSR0B = UCSR0B & (~(1<<TXEN0)))	//é€ä¿¡ç¦æ­¢
+#define EN_UART_TX						(UCSR0B = UCSR0B | ( (1<<TXEN0)))	//é€ä¿¡è¨±å¯
+#define DI_INTER_UART_TX_REG_EMPTY		(UCSR0B = UCSR0B & (~(1<<UDRIE0)))	//é€ä¿¡ãƒãƒƒãƒ•ã‚¡ç©ºå‰²è¾¼ã¿ç¦æ­¢
+#define EN_INTER_UART_TX_REG_EMPTY		(UCSR0B = UCSR0B | ( (1<<UDRIE0)))	//é€ä¿¡ãƒãƒƒãƒ•ã‚¡ç©ºå‰²è¾¼ã¿è¨±å¯
+#define DI_INTER_UART_TX_FIN			(UCSR0B &= (~(1<<TXCIE0)))		//é€ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯
+#define EN_INTER_UART_TX_FIN			(UCSR0B |= ( (1<<TXCIE0)))		//é€ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯
 //----------------------------------------
-// ŽóM
+// å—ä¿¡
 //----------------------------------------
-#define UART_REG_RXC	(UCSR0A & (1<<RXC0))	//UARTŽóMŠ®—¹ƒtƒ‰ƒO
-#define RXC_IN_DATA		(1<<RXC0)		//ŽóMƒf[ƒ^—L‚è
-#define RXC_NO_DATA		(0<<RXC0)		//ŽóMƒf[ƒ^–³‚µ
+#define UART_REG_RXC	(UCSR0A & (1<<RXC0))	//UARTå—ä¿¡å®Œäº†ãƒ•ãƒ©ã‚°
+#define RXC_IN_DATA		(1<<RXC0)		//å—ä¿¡ãƒ‡ãƒ¼ã‚¿æœ‰ã‚Š
+#define RXC_NO_DATA		(0<<RXC0)		//å—ä¿¡ãƒ‡ãƒ¼ã‚¿ç„¡ã—
 
-#define RX_BUF_SIZE		0xF;	//ŽóMƒoƒbƒtƒ@ƒTƒCƒY
+#define RX_BUF_SIZE		0xF;	//å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 
-#define UART_DATAPOS_ID			0		//ƒf[ƒ^ˆÊ’uID
-#define UART_DATAPOS_LENGTH		1		//ƒf[ƒ^ˆÊ’uƒŒƒ“ƒOƒX
-#define UART_FRAME_TIMEOUT		2		//ƒ^ƒCƒ€ƒAƒEƒg(10(ƒtƒŒ[ƒ€ŽüŠú)-7(‘—MŽžŠÔ)=2(‹ó‚«ŽžŠÔ
+#define UART_DATAPOS_ID			0		//ãƒ‡ãƒ¼ã‚¿ä½ç½®ID
+#define UART_DATAPOS_LENGTH		1		//ãƒ‡ãƒ¼ã‚¿ä½ç½®ãƒ¬ãƒ³ã‚°ã‚¹
+#define UART_FRAME_TIMEOUT		2		//ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ(10(ãƒ•ãƒ¬ãƒ¼ãƒ å‘¨æœŸ)-7(é€ä¿¡æ™‚é–“)=2(ç©ºãæ™‚é–“
 
-#define UART_ID_CARDATA			0x11		//ƒtƒŒ[ƒ€ID
-#define UART_ID_SETTING			0x21		//ƒtƒŒ[ƒ€ID
+#define UART_ID_CARDATA			0x11		//ãƒ•ãƒ¬ãƒ¼ãƒ ID
+#define UART_ID_SETTING			0x21		//ãƒ•ãƒ¬ãƒ¼ãƒ ID
 
-#define DI_UART_RX						(UCSR0B = UCSR0B & (~(1<<RXEN0)))	//ŽóM‹ÖŽ~
-#define EN_UART_RX						(UCSR0B = UCSR0B | ( (1<<RXEN0)))	//ŽóM‹–‰Â
-#define DI_INTER_UART_RX_COMP			(UCSR0B = UCSR0B & (~(1<<RXCIE0)))	//ŽóMŠ®—¹Š„ž‚Ý‹ÖŽ~
-#define EN_INTER_UART_RX_COMP			(UCSR0B = UCSR0B | ( (1<<RXCIE0)))	//ŽóMŠ®—¹Š„ž‚Ý‹–‰Â
+#define DI_UART_RX						(UCSR0B = UCSR0B & (~(1<<RXEN0)))	//å—ä¿¡ç¦æ­¢
+#define EN_UART_RX						(UCSR0B = UCSR0B | ( (1<<RXEN0)))	//å—ä¿¡è¨±å¯
+#define DI_INTER_UART_RX_COMP			(UCSR0B = UCSR0B & (~(1<<RXCIE0)))	//å—ä¿¡å®Œäº†å‰²è¾¼ã¿ç¦æ­¢
+#define EN_INTER_UART_RX_COMP			(UCSR0B = UCSR0B | ( (1<<RXCIE0)))	//å—ä¿¡å®Œäº†å‰²è¾¼ã¿è¨±å¯

@@ -6,17 +6,17 @@ typedef enum{
 	NO_MAX
 }PORT_NO;
 
-#define N1		4		//1‰ñ“]“–‚½‚è‚ÌÔ‘¬ƒZƒ“ƒTƒpƒ‹ƒX”
-#define N2		637		//60km/h‚ÌÔ‘¬ƒZƒ“ƒT‰ñ“]‘¬“xrpm
-#define C		2		//1‰ñ“]“–‚½‚è‚Ì“_‰Î‰ñ”
-#define R_SP	2		//1“_‰Î“–‚½‚è‚Ì‰ñ“]”(4st=2,1st=1
+#define N1		4		//1å›è»¢å½“ãŸã‚Šã®è»Šé€Ÿã‚»ãƒ³ã‚µãƒ‘ãƒ«ã‚¹æ•°
+#define N2		637		//60km/hæ™‚ã®è»Šé€Ÿã‚»ãƒ³ã‚µå›è»¢é€Ÿåº¦rpm
+#define C		2		//1å›è»¢å½“ãŸã‚Šã®ç‚¹ç«å›æ•°
+#define R_SP	2		//1ç‚¹ç«å½“ãŸã‚Šã®å›è»¢æ•°(4st=2,1st=1
 
-#define INIT_PALSE_SPEED	4	//1‰ñ“]“–‚½‚è‚Ìƒpƒ‹ƒX”
-#define INIT_PALSE_REV		4	//‹C“›”
+#define INIT_PALSE_SPEED	4	//1å›è»¢å½“ãŸã‚Šã®ãƒ‘ãƒ«ã‚¹æ•°
+#define INIT_PALSE_REV		4	//æ°—ç­’æ•°
 
-#define TIME_US	1000000		//us‚ğs‚ÉŠ·Z‚µŒvZ
-#define ROUND_DIGIT	10		//¬”“_‘æ1ˆÊ‚ÅŠÛ‚ß‚éB10”{‚µ‚Ä5‚ğ‘«‚µ‚Ä10‚ÅŠ„‚é
-#define ROUND5		5		//lÌŒÜ“üB5‚ğ‘«‚µ‚Ä10‚ÅŠ„‚é
+#define TIME_US	1000000		//usã‚’sã«æ›ç®—ã—è¨ˆç®—
+#define ROUND_DIGIT	10		//å°æ•°ç‚¹ç¬¬1ä½ã§ä¸¸ã‚ã‚‹ã€‚10å€ã—ã¦5ã‚’è¶³ã—ã¦10ã§å‰²ã‚‹
+#define ROUND5		5		//å››æ¨äº”å…¥ã€‚5ã‚’è¶³ã—ã¦10ã§å‰²ã‚‹
 
-const unsigned char SETTING_PALSE_SPEED[6]=	{0,4,8,16,20,25};		//Ô‘¬ƒpƒ‹ƒXd—l
-const unsigned char SETTING_PALSE_REV[9]={0,1,2,3,4,5,6,8,10};	//‰ñ“]”ƒpƒ‹ƒXd—l(‹C“›”
+const unsigned char SETTING_PALSE_SPEED[6]=	{0,4,8,16,20,25};		//è»Šé€Ÿãƒ‘ãƒ«ã‚¹ä»•æ§˜
+const unsigned char SETTING_PALSE_REV[9]={0,1,2,3,4,5,6,8,10};	//å›è»¢æ•°ãƒ‘ãƒ«ã‚¹ä»•æ§˜(æ°—ç­’æ•°

@@ -8,10 +8,10 @@
 static DRV_IN_TIMER		drvInTimer[DRV_IN_TIMER_NUM];
 
 static TIMER_INS		timerIns[DRV_IN_TIMER_NUM];
-static TIMER_STATE		timerRegState;		//�}�C�R���^�C�}���
+static TIMER_STATE		timerRegState;		//マイコンタイマ状態
 
 //************************************************************
-//������
+//初期化
 //************************************************************
 void initDrvInTimer( void )
 {
@@ -33,24 +33,24 @@ void initDrvInTimer( void )
 }
 
 //************************************************************
-//���C������
+//メイン処理
 //************************************************************
 void drvInTimerMain( void )
 {
 }
 
 //************************************************************
-// �^�C�}�X�^�[�g
+// タイマスタート
 //************************************************************
 void startDrvInTimer( DRV_IN_TIMER_ID timerId )
 {
 	unsigned short	inTimerReg;
 
 	cli();
-	//���W�X�^����^�C�}�l�擾(�덷�����Ȃ����邽�߁A�ŏ��ɓǎ��
+	//レジスタからタイマ値取得(誤差を少なくするため、最初に読取る
 	inTimerReg	= GET_TIMER_CNT;
 
-	//�}�C�R���̃^�C�}���~�܂��Ă��鎞�́A�^�C�}�@�\����J�n������
+	//マイコンのタイマが止まっている時は、タイマ機能動作開始させる
 	if( timerRegState == TIMER_STATE_STOP ){
 		SET_TIMER_CNT( 0 );
 		inTimerReg	= 0;
@@ -58,7 +58,7 @@ void startDrvInTimer( DRV_IN_TIMER_ID timerId )
 		START_TIMER_1A;
 		timerRegState = TIMER_STATE_START;
 	}
-	//�X�^�[�g���N���A
+	//スタート＆クリア
 	drvInTimer[timerId].state		= DRV_IN_TIMER_STATE_START;
 	drvInTimer[timerId].cnt			= 0;
 
@@ -69,7 +69,7 @@ void startDrvInTimer( DRV_IN_TIMER_ID timerId )
 }
 
 //************************************************************
-// �^�C�}�N���A
+// タイマクリア
 //************************************************************
 void clearDrvInTimer( DRV_IN_TIMER_ID timerId )
 {
@@ -77,7 +77,7 @@ void clearDrvInTimer( DRV_IN_TIMER_ID timerId )
 	
 }
 //************************************************************
-// �^�C�}�X�g�b�v
+// タイマストップ
 //************************************************************
 void stopDrvInTimer( DRV_IN_TIMER_ID timerId )
 {
@@ -85,11 +85,11 @@ void stopDrvInTimer( DRV_IN_TIMER_ID timerId )
 	DRV_IN_TIMER_STATE		chkTimerState;
 
 	cli();
-	//�S�Ẵ^�C�}���~�܂��Ă�����A�}�C�R���̃^�C�}���~�߂�
+	//全てのタイマが止まっていたら、マイコンのタイマを止める
 	chkTimerState = DRV_IN_TIMER_STATE_STOP;
 	for(i=0;i<DRV_IN_TIMER_NUM;i++){
 		if( drvInTimer[i].state	!= DRV_IN_TIMER_STATE_STOP ){
-			chkTimerState = DRV_IN_TIMER_STATE_START;	//�����Ă���
+			chkTimerState = DRV_IN_TIMER_STATE_START;	//動いている
 		}
 	}
 	if( (chkTimerState == DRV_IN_TIMER_STATE_STOP ) &&
@@ -107,7 +107,7 @@ void stopDrvInTimer( DRV_IN_TIMER_ID timerId )
 	sei();
 }
 //************************************************************
-// �^�C�}�l�擾
+// タイマ値取得
 //************************************************************
 DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId )
 {
@@ -115,38 +115,38 @@ DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId )
 	
 	cli();
 
-	//���W�X�^����^�C�}�l�擾
+	//レジスタからタイマ値取得
 	inTimerReg	= GET_TIMER_CNT;
 
-	//�v���J�n�^�C�}�J�E���g���W�X�^�l���猻�݂̒l�������A�o�ߎ��Ԃ��o��
+	//計測開始タイマカウントレジスタ値から現在の値を引き、経過時間を出す
 	timerIns[timerId].cnt += (inTimerReg - timerIns[timerId].startCnt);
 
-	//�I�[�o�[�t���[(0km/h)���o
+	//オーバーフロー(0km/h)検出
 	if(	timerIns[timerId].cnt > TIMER_CNT_MAX[N1_04] ){
 		timerIns[timerId].state	= DRV_IN_TIMER_STATE_OVERFLOW;
 	}
-	//���J�p�ϐ��փR�s�[
+	//公開用変数へコピー
 	drvInTimer[timerId].cnt		= timerIns[timerId].cnt;
-	//���̎����J�E���g�p�ɃN���A
+	//次の周期カウント用にクリア
 	timerIns[timerId].cnt		= 0;
-	timerIns[timerId].startCnt = inTimerReg;		//�v���J�n�J�E���g�l�X�V
+	timerIns[timerId].startCnt = inTimerReg;		//計測開始カウント値更新
 
 	
 	sei();
 
-	//get�����u�Ԃ̃f�[�^���~�������߁A���Ԃ�Ԃ�
-	//(�|�C���^���Ǝg�p����O�Ɋ��荞�݂ɂ��l���ω�����\��������
+	//getした瞬間のデータが欲しいため、実態を返す
+	//(ポインタだと使用する前に割り込みにより値が変化する可能性がある
 	return( drvInTimer[timerId] );
 }
 //************************************************************
-// �^�C�}��Ԃ̂ݎ擾
+// タイマ状態のみ取得
 //************************************************************
 DRV_IN_TIMER getDrvInTimerState( DRV_IN_TIMER_ID timerId )
 {
 	return( drvInTimer[timerId] );
 }
 //************************************************************
-// �}�C�R���̃^�C�}�I�[�o�[�t���[
+// マイコンのタイマオーバーフロー
 //************************************************************
 void interDrvInTimerOverflow( void )
 {
@@ -155,10 +155,10 @@ void interDrvInTimerOverflow( void )
 	cli();
 	
 	for(i=0;i<DRV_IN_TIMER_NUM;i++){
-		//�v���J�n�^�C�}�J�E���g���W�X�^�l���猻�݂̒l�������A�o�ߎ��Ԃ��o��
+		//計測開始タイマカウントレジスタ値から現在の値を引き、経過時間を出す
 		timerIns[i].cnt += (TIMER_REG_MAX - timerIns[i].startCnt);
-		timerIns[i].startCnt = 0;		//�v���J�n�J�E���g�l�X�V
-	//�I�[�o�[�t���[(0km/h)���o
+		timerIns[i].startCnt = 0;		//計測開始カウント値更新
+	//オーバーフロー(0km/h)検出
 		if(	timerIns[i].cnt > TIMER_CNT_MAX[N1_04] ){
 			drvInTimer[i].state	= DRV_IN_TIMER_STATE_OVERFLOW;
 //			drvInTimer[i].cnt		= 0;

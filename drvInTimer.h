@@ -13,8 +13,8 @@ typedef enum{
 }DRV_IN_TIMER_STATE;
 
 typedef struct{
-	DRV_IN_TIMER_STATE		state;		//ƒ^ƒCƒ}ó‘Ô
-	unsigned long	cnt;		//ƒ^ƒCƒ}ƒJƒEƒ“ƒg’l
+	DRV_IN_TIMER_STATE		state;		//ã‚¿ã‚¤ãƒçŠ¶æ…‹
+	unsigned long	cnt;		//ã‚¿ã‚¤ãƒã‚«ã‚¦ãƒ³ãƒˆå€¤
 }DRV_IN_TIMER;
 
 extern void initDrvInTimer( void );
