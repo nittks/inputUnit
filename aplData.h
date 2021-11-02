@@ -1,3 +1,5 @@
+#ifndef APL_DATA_H
+#define APL_DATA_H
 
 typedef enum{
 	APL_DATA_SW_OFF,
@@ -49,3 +51,4 @@ extern APL_DATA_PALSE *getAplDataPalse( void );
 extern APL_DATA_CAR_SW *getAplDataCarSw( void );
 extern APL_DATA_COM *getAplDataCom( void );
 extern APL_DATA_EEP *getAplDataEep( void );
+#endif

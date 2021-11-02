@@ -1,3 +1,7 @@
+#ifndef APL_CTRL_H
+#define APL_CTRL_H
+
+#include <avr/io.h>
 
 //状態
 typedef enum{
@@ -20,3 +24,5 @@ extern void initAplCtrl( void );
 extern void aplCtrlMain( void );
 extern APL_CTRL *getAplCtrl( void );
 extern APL_CTRL_SET	*getAplCtrlSet( void );
+
+#endif

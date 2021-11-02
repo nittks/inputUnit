@@ -1,3 +1,5 @@
+#ifndef LNK_IN_COM_INC_H
+#define LNK_IN_COM_INC_H
 
 
 enum{
@@ -7,3 +9,12 @@ enum{
 	UART_NO_SUM,
 	UART_NO_MAX
 };
+
+enum{
+	POS_IG,
+	POS_ACC,
+	POS_ILL,
+	POS_VTC,
+};
+
+#endif

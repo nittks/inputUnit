@@ -11,18 +11,17 @@
 
 #define INT_CNT_MAX	((unsigned char)125)	//8us*125=1ms毎割り込み
 
-ISR(TIMER0_COMPA_vect)	//タイマ割り込み(システムタイマ
+ISR(TCA0_OVF_vect)	//タイマ割り込み
 {
-	interMainTask();
+	interTaskTime();
 }
-ISR(USART_RX_vect)		//UART受信割込み
+ISR(USART0_RXC_vect)		//UART受信割込み
 {
 	interGetUartRxData();
 }
-
-ISR(USART_UDRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
+ISR(USART0_DRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
 {
-	interSetUartTxData();
+	interSetTxBuffer();
 }
 ISR( USART_TX_vect ){	//UART送信完了割込み
 	interUartTxFin();
