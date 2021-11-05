@@ -71,6 +71,7 @@ unsigned char setDrvEep( DRV_EEP_WRITE *inP )
 //********************************************************************************//
 void interEepRedy( void )
 {
+	NVMCTRL.INTFLAGS	&= (~NVMCTRL_EEREADY_bm);
 	if( state == EEP_STATE_READ ){		//読み込み途中
 		eepRead();
 	}else if( state == EEP_STATE_WRITE ){	//書込み途中
@@ -79,12 +80,14 @@ void interEepRedy( void )
 }
 //********************************************************************************//
 // 読み込み
+// mega0シリーズマイコンではEEPROMから直接メモリアクセスとして読み込めるため、
+// アクセス待ちの処理は削除しても良いかもしれない。
 //********************************************************************************//
 static void eepRead( void )
 {
 	//EEPROMアクセス可能な間、読込続ける。アクセス不可でbreakする
 	while( 1 ){
-		if( eeprom_is_ready() == EEP_READY_FAIL ){
+		if( EEPROM_IS_READY == EEP_READY_FAIL ){
 			//EEPROMアクセス不可の場合抜ける
 			state = EEP_STATE_READ;
 			INT_EEP_ENABLE;		//EEPROMアクセス可能割込み許可
@@ -110,10 +113,9 @@ static void eepRead( void )
 //********************************************************************************//
 static void eepWrite( void )
 {
-	
 	//EEPROMアクセス可能な間、読込続ける。アクセス不可でbreakする
 	while( 1 ){
-		if( eeprom_is_ready() == EEP_READY_FAIL ){
+		if( EEPROM_IS_READY == EEP_READY_FAIL ){
 			//EEPROMアクセス不可の場合抜ける
 			state = EEP_STATE_WRITE;
 			INT_EEP_ENABLE;		//EEPROMアクセス可能割込み許可
@@ -121,13 +123,13 @@ static void eepWrite( void )
 		}else{
 			//値が異なっていたら書込む
 			if( drvEepWrite.val[ eepAddrCnt ] != eepCache[ eepAddrCnt ] ){
+				//↓simだとaddr=0(0x1400)に書込めない。実機はOK
 				eeprom_write_byte( (uint8_t*)eepAddrCnt ,drvEepWrite.val[eepAddrCnt] );
 				eepCache[ eepAddrCnt ] =  drvEepWrite.val[ eepAddrCnt ];
 			}
-
-			if( eepAddrCnt < DRV_EEP_MAP_MAX-1 ){
-				eepAddrCnt++;
-			}else{
+			
+			eepAddrCnt++;
+			if( eepAddrCnt >= DRV_EEP_MAP_MAX ){
 				//全データ書込み完
 				state = EEP_STATE_READY;
 				INT_EEP_DISABLE;		//EEPROMアクセス可能割込み禁止

@@ -1,84 +1,66 @@
+#ifndef MAIN_INC_H
+#define MAIN_INC_H
+
+#include "drvUart.h"
 
 typedef struct{
-	unsigned short	currentTime;
-	unsigned char	cycleTime;
+	unsigned char	regist;			//登録状態。タスクが有効か無効か
+	unsigned short	currentTime;	//現在時間。0になったらタスク起動
+	unsigned short	cycleTime;		//タスク周期。
 	void			(*func)(void);
 }TASK_PARAMETER;
-//CS0 クロック選択0
+
+
+static void powerLed( void );
+#define LED_BOOT_TIME_MS	((uint16_t)100)
+#define	TASK_NUM	7
+// main_inc.hに記述するとsim実行時に値がセットされなくなったため、.cへ移動
+// IEDverが変わったため？AtmelStudio6->7
+// また、変数を.hに定義するのは良くないとのこと。
+
+static TASK_PARAMETER	taskParameter[TASK_NUM]	={
+	//現在時間(開始時オフセット) , 周期 , 関数名
+	{	true,	0,	10,	drvInMain	},
+	{	true,	1,	10,	lnkInMain	},
+	{	true,	2,	10,	aplMain		},
+	{	true,	3,	10,	lnkOutMain	},
+	{	true,	4,	10,	drvOutMain	},
+	{	false,	5,	250,powerLed	},
+	{	false,	0,	2,	drvUartChangeTx}		//UARTドライバからの要求により有効化する
+};
+//CTRLA CLKSEL
 enum{
-	CS0_STOP	= 0,
-	CS0_DIV_NO,
-	CS0_DIV_8,
-	CS0_DIV_64,
-	CS0_DIV_256,
-	CS0_DIV_1024,
-	CS0_DIV_TODOWN,
-	CS0_DIV_T0UP
+	CLKSEL_DIV1		= 0x0,
+	CLKSEL_DIV2		= 0x1,
+	CLKSEL_DIV4		= 0x2,
+	CLKSEL_DIV8		= 0x3,
+	CLKSEL_DIV16	= 0x4,
+	CLKSEL_DIV64	= 0x5,
+	CLKSEL_DIV256	= 0x6,
+	CLKSEL_DIV1024	= 0x7,
 };
 
-//WGM0 波形生成種別
+//CTRLB WGMODE
 enum{
-	WGM_NORMAL	=0,
-	WGM_8BIT_PHASE_BASE_PWM,
-	WGM_COMP_CTC,
-	WGM_8BIT_HIGHT_SPEED_PWM,
-	WGM_RESERVE,
-	WGM_PHASE_BASE_PWM,
-	WGM_RESERVE1,
-	WGM_HIGHT_SPEED_PWM
-};
-
-//COM0A 比較A出力選択
-enum{
-	COM0A_NORMAL	= 0,
-	COM0A_COMP_TOGLE,
-	COM0A_COMP_LOW,
-	COM0A_COMP_HIGH
+	WGMODE_NORMAL		= 0x0,
+	WGMODE_FRQ			= 0x1,
+	WGMODE_SINGLESLOPE	= 0x3,
+	WGMODE_DSTOP		= 0x5,
+	WGMODE_DSBOTH		= 0x6,
+	WGMODE_DSBOTTOM		= 0x7,
 };
 
 //レジスタ設定
-#define		REG_CS0		(CS0_DIV_64 & 0x07)	//3bit
-#define		REG_WGM		(WGM_COMP_CTC & 0x07)		//3bit
-#define		REG_COM0A	(COM0A_NORMAL & 0x03)	//2bit
-#define		TIMER_TOP	125		//8us*125=1ms,1ms毎割り込み
-#define		REG_OCIE0A	1		//比較一致割込み許可
-#define		REG_CAL		88		//内臓クロック校正(デフォルト88(0x58)
-#define		PCINT		((1<<PCINT1) | (1<<PCINT0))
-
+#define		OVF_DI		(0)
+#define		OVF_EN		(1)
 
 //レジスタセット用
-#define		SET_TCCR0A	(( REG_COM0A << COM0A0 ) | ((REG_WGM & 0x03) << WGM00))	//WGM00,01のみ
-#define		SET_TCCR0B	(( (REG_WGM >> 2) << WGM02) | (REG_CS0 << CS00))
-#define		SET_OCR0A	TIMER_TOP
-#define		SET_TIMSK0	(( REG_OCIE0A << OCIE0A))
-#define		SET_OSCCAL	REG_CAL
-#define		SET_PCMSK	PCINT
-
-
+#define		CTRLA_REG_START_TASK_TIMER		( TCA0.SINGLE.CTRLA = TCA0.SINGLE.CTRLA | 0x01 )
 
 enum{
-	TASK_DRV_IN_MAIN,
-	TASK_LINK_IN,
-	TASK_APL,
-	TASK_LINK_OUT,
-	TASK_DRV_OUT,
-	TASK_TIMER,
-	TASK_POWER_LED,
-	TASK_MAX
-};
-static void powerLed( void );
-
-TASK_PARAMETER	taskParameter[TASK_MAX]	={
-	//現在時間(開始時オフセット) , 周期 , 関数名
-	{	1,	10,	drvInMain	},
-	{	2,	10,	lnkInMain	},
-	{	3,	10,	aplMain		},
-	{	4,	10,	lnkOutMain	},
-	{	5,	10,	drvOutMain	},
-	{	6,	1,	timerMain	},
-	{	7,	250,powerLed	},
+	FUSE_OSCCFG_FREQSEL_16MHZ	= 1,
+	FUSE_OSCCFG_FREQSEL_20MHZ	= 2
 };
 
 
-
-
+#endif

@@ -22,9 +22,8 @@ void initDrvInPalseCnt( void )
 	for( i=0 ; i<DRV_IN_PALSE_CNT_NO_MAX ; i++ ){
 		drvInPulseCnt.cycCnt[i] = 0;
 	}
-	SET_EICRA;
-	SET_EIMSK;
-
+	PORTF.PIN0CTRL	= PORT_ISC_RISING_gc;	// 立ち上がり割り込み
+	PORTF.PIN1CTRL	= PORT_ISC_RISING_gc;
 }
 
 //********************************************************************************

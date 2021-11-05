@@ -1,10 +1,11 @@
 
-#define F_CPU 8000000UL
+#include "main.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>  //割り込みを使用するため
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "drvUart_inc.h"
 #include "drvUart.h"
@@ -37,6 +38,20 @@ void initDrvUart( void )
 {
 	unsigned char	i;
 
+	/* 周波数誤差保証 参照元：mega3209.pdf 日本語版 P.48,158 */
+	/* 工場で格納された周波数誤差でのボーレート補償 */
+	/* 自動ボーレート(同期領域)なしでの非同期通信 */
+	int8_t sigrow_val = SIGROW.OSC16ERR5V; // 符号付き誤差取得
+	int32_t baud_reg_val = (64*(F_CPU/8))/(16*USEBAUD);		//少数切り捨て (64*fCLK_PRE)/(S*fBAUD) 
+	assert (baud_reg_val >= 0x4A); // 負の最大比較で正当な最小BAUDレジスタ値を確認
+	baud_reg_val *= (1024 + sigrow_val); // (分解能+誤差)で乗算
+	baud_reg_val /= 1024; // 分解能で除算
+	USART1.BAUD = (int16_t) baud_reg_val; // 補正したボーレート設定
+
+	USART1.CTRLA	= SET_CTRLA( RS485_AUTO_XDIR_ON , RS485_AUTO_TX_OUTPUT_OFF );
+	USART1.CTRLB	= USART_RXEN_bm | USART_TXEN_bm | USART_RXMODE_NORMAL_gc;
+	USART1.CTRLC	= USART_CMODE_ASYNCHRONOUS_gc | USART_PMODE_DISABLED_gc | 
+					  USART_SBMODE_2BIT_gc | USART_CHSIZE_8BIT_gc;
 	//送信
 	for( i=0 ; i<DRV_UART_RX_BUF_SIZE; i++ ){
 		drvUartTx.txData[i]	= 0;
@@ -55,6 +70,8 @@ void initDrvUart( void )
 		
 	rxDataCnt		= 0;
 	rxDataLen		= 0;
+	rxFlag			= false;
+
 
 	//送受信許可
 	EN_UART_TX;
@@ -64,7 +81,6 @@ void initDrvUart( void )
 	//受信完了割込み許可
 	uartState		= UART_STATE_STANDBY;
 	EN_INTER_UART_RX_COMP;
-	RS485_RX;
 }
 
 //********************************************************************************//
@@ -76,12 +92,25 @@ void setDrvUartTx( DRV_UART_TX *inP )
 
 	if( uartState == UART_STATE_STANDBY ){
 		uartState = UART_STATE_TRANS;
-		RS485_TX;						//RS485トランシーバ方向切替
 		EN_INTER_UART_TX_REG_EMPTY;		//送信バッファ空割込み許可 
 		DI_INTER_UART_RX_COMP;			//受信完了割込み禁止
 	}
 }
 
+//********************************************************************************//
+// 受信完了→ウェイト後、送信モードへ移行
+//********************************************************************************//
+void drvUartChangeTx( void )
+{
+	cli();
+	disableTask( TASK_UART_CHANGE_TX );		//本関数の起動無効化依頼
+	uartState = UART_STATE_TRANS;
+	
+	EN_INTER_UART_TX_REG_EMPTY;		//送信バッファ空割込み許可 
+	DI_INTER_UART_RX_COMP;			//受信完了割込み禁止
+	sei();
+}
+													
 //********************************************************************************//
 // 送信レジスタ空割込み
 //********************************************************************************//
@@ -89,8 +118,8 @@ void interSetUartTxData(void)
 {
 	cli();	//割り込み禁止
 
-	while( UART_REG_UDRE == UDRE_EMPTY ){	//送信レジスタ空の間回す
-		UDR0 = drvUartTx.txData[txDataCnt];
+	while( UART_DATA_REG_EMP_FLG == DREIF_EMPTY ){	//送信レジスタ空の間回す
+		USART1.TXDATAH = drvUartTx.txData[txDataCnt];
 		txDataCnt++;
 
 		if( txDataCnt >= drvUartTx.txDataNum ){	//全データ送信済み
@@ -111,8 +140,6 @@ void interUartTxFin(void)
 	cli();	//割り込み禁止
 
 	uartState = UART_STATE_STANDBY;
-
-	RS485_RX;						//RS485トランシーバは受信状態で待機
 	EN_INTER_UART_RX_COMP;			//受信完了割込み許可
 
 	sei();	//割込み許可
@@ -140,10 +167,10 @@ void interGetUartRxData(void)
 	unsigned char	timerCnt;
 
 	cli();	//割り込み禁止
-	while( UART_REG_RXC == RXC_IN_DATA){
+	while( UART_REG_RXIC == RXC_IN_DATA){
 
 		//レジスタよりデータ取得
-		rxBuf = UDR0;
+		rxBuf = USART1.RXDATAL;
 		
 		//タイマオーバーフロー or フレーム間タイムアウト
 		//フレームの最初(ID)から受信しなおす
