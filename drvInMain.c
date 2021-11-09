@@ -5,6 +5,7 @@
 #include "drvInCarSw.h"
 #include "drvInTimer.h"
 #include "drvEep.h"
+#include "drvUart.h"
 
 void initDrvIn( void )
 {

@@ -16,7 +16,6 @@ void initDrvInCarSw( void )
 {
 	drvInCarSw.ig	= DRV_IN_CAR_SW_OFF;
 	drvInCarSw.ill	= DRV_IN_CAR_SW_OFF;
-	drvInCarSw.test	= DRV_IN_CAR_SW_OFF;
 }
 
 //********************************************************************************
@@ -57,9 +56,4 @@ void drvInCarSwMain( void )
 		drvInCarSw.vtc	= DRV_IN_CAR_SW_OFF;
 	}
 
-	if( PORT_TEST == ON ){
-		drvInCarSw.test	= DRV_IN_CAR_SW_ON;
-	}else{
-		drvInCarSw.test	= DRV_IN_CAR_SW_OFF;
-	}
 }

@@ -41,7 +41,7 @@ void lnkInComMain( void )
 		
 			outLnkInPalseCnt.palseSpeed	= outAplDataCom.palseSpeed;
 			outLnkInPalseCnt.palseRev	= outAplDataCom.palseRev;
-//			setLnkInPalseCnt( &outLnkInPalseCnt );
+			setLnkInPalseCnt( &outLnkInPalseCnt );
 		}
 	}
 }

@@ -15,30 +15,30 @@ ISR(TCA0_OVF_vect)	//タイマ割り込み
 {
 	interTaskTime();
 }
+ISR(TCA0_CMP0_vect)	//タイマ割り込み
+{
+	interTaskTime();
+}
 ISR(USART0_RXC_vect)		//UART受信割込み
 {
 	interGetUartRxData();
 }
-ISR(USART0_DRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
+ISR(USART1_DRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
 {
-	interSetTxBuffer();
+	interSetUartTxData();
 }
-ISR( USART_TX_vect ){	//UART送信完了割込み
+ISR( USART1_TXC_vect ){	//UART送信完了割込み
 	interUartTxFin();
 }
 
-ISR(TIMER1_OVF_vect)	//タイマオーバーフロー(パルス間隔計測タイマ
+ISR(TCB0_INT_vect)	//タイマオーバーフロー(パルス間隔計測タイマ
 {
 	interDrvInTimerOverflow();
 }
-ISR(INT0_vect)			//INT0ポート変化割り込み
+ISR(PORTF_PORT_vect)			//ポートF割り込み
 {
 	interPosEdgeSpeed();
 }
-ISR(INT1_vect)			//INT1ポート変化割り込み
-{
-	interPosEdgeRev();
-}
-ISR(EE_READY_vect){		//EEPROMアクセス可能割込み
+ISR(NVMCTRL_EE_vect){		//EEPROMアクセス可能割込み
 	interEepRedy();
 }

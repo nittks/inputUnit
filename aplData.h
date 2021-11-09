@@ -22,7 +22,6 @@ typedef struct{
 	APL_DATA_SW		acc;
 	APL_DATA_SW		ill;
 	APL_DATA_SW		vtc;
-	APL_DATA_SW		test;
 }APL_DATA_CAR_SW;
 
 typedef struct{

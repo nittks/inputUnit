@@ -13,7 +13,7 @@ static unsigned char	testSpeed;
 static unsigned short	testRev;
 static TEST_STATE		testStateSpeed;
 static TEST_STATE		testStateRev;
-
+static volatile uint8_t	debugSpeed = 123;
 static unsigned char makeTestDataSpeed( void );
 static unsigned short makeTestDataRev( void );
 //********************************************************************************
@@ -43,15 +43,9 @@ void aplComDataMain( void )
 	inAplDataCarSw	= getAplDataCarSw();
 	inAplCtrlSet	= getAplCtrlSet();
 
-	if( inAplDataCarSw->test == APL_DATA_SW_ON ){
-		//テストモード
-		aplComData.speed	= makeTestDataSpeed();
-		aplComData.rev		= makeTestDataRev();
-	}else{
-		//通常モード
-		aplComData.speed	= inAplDataPalse->speed;
-		aplComData.rev		= inAplDataPalse->rev;
-	}
+	//通常モード
+	aplComData.speed	= debugSpeed;
+	aplComData.rev		= inAplDataPalse->rev;
 
 	aplComData.palseSpeed	= inAplCtrlSet->palseSpeed;
 	aplComData.palseRev		= inAplCtrlSet->palseRev; 

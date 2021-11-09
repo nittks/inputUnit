@@ -21,7 +21,6 @@ void initAplData( void )
 	aplDataCarSw.ig		= APL_DATA_SW_OFF;
 	aplDataCarSw.ill	= APL_DATA_SW_OFF;
 	aplDataCarSw.vtc	= APL_DATA_SW_OFF;
-	aplDataCarSw.test	= APL_DATA_SW_OFF;		//基板SW
 
 	//EEPROM
 	aplDataEep.read			= APL_DATA_EEP_STATE_UNREAD;
@@ -57,7 +56,6 @@ void setAplDataCarSw( APL_DATA_CAR_SW * inData )
 	aplDataCarSw.ig		= inData->ig;
 	aplDataCarSw.ill	= inData->ill;
 	aplDataCarSw.vtc	= inData->vtc;
-	aplDataCarSw.test	= inData->test;
 }
 //********************************************************************************
 // 通信

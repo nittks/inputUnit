@@ -31,6 +31,7 @@ extern void drvUartMain( void );
 extern void interSetUartTxData(void);
 extern void interUartTxFin(void);
 extern void interGetUartRxData(void);
+extern void drvUartChangeTx( void );
 extern void setDrvUartTx( DRV_UART_TX *inP );
 extern DRV_UART_RX *getDrvUartRx( void );
 

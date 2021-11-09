@@ -46,11 +46,5 @@ void lnkInCarSwMain( void )
 		aplDataCarSw.vtc	= APL_DATA_SW_ON;
 	}
 
-	//Test
-	if( inDrvInCarSw->test == DRV_IN_CAR_SW_OFF ){
-		aplDataCarSw.test	= APL_DATA_SW_OFF;
-	}else{
-		aplDataCarSw.test	= APL_DATA_SW_ON;
-	}
 	setAplDataCarSw( &aplDataCarSw );
 }

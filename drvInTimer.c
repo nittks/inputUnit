@@ -26,9 +26,12 @@ void initDrvInTimer( void )
 
 	timerRegState = TIMER_STATE_STOP;
 	
-	SET_TCCR1A;
-	SET_TCCR1B;
-	SET_OCR1A;
+	//タイマ設定
+
+	TCB0.CTRLA		= TCB_CLKSEL_CLKDIV1_gc;
+	TCB0.CTRLB		= TCB_CNTMODE_INT_gc;
+	TCB0.INTCTRL	= TCB_CAPT_bm;
+	TCB0.CCMP		= TIMER_REG_MAX;
 
 }
 
