@@ -11,7 +11,7 @@
 // テストモード
 //********************************************************************************
 //テストデータ計算周期
-#define		TEST_CYC_SPEED	((unsigned char)10-1)	//10x10ms=100ms毎処理
+#define		TEST_CYC_SPEED	((unsigned char)100-1)	//10x10ms=1000ms毎処理
 #define		TEST_CYC_REV	((unsigned char)2-1)	//10x10ms=100ms毎処理
 //計算毎の変化値
 #define		CHG_VAL_SPEED	((unsigned char)2)

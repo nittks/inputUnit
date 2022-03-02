@@ -39,10 +39,8 @@ void lnkOutComMain( void )
 	for( j=0 ; j<UART_TX_LENGTH-1 ; j++ ){
 		sum += outDrvUartTx.txData[j];
 	}
-
 	outDrvUartTx.txData[i]	= sum;
-	outDrvUartTx.txDataNum	= UART_TX_LENGTH;
-
+	
 	//データ数
 	outDrvUartTx.txDataNum	= UART_TX_LENGTH;
 

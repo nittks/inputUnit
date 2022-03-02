@@ -11,7 +11,7 @@ static unsigned char	testCycSpeed;
 static unsigned char	testCycRev;
 static unsigned char	testSpeed;
 static unsigned short	testRev;
-static TEST_STATE		testStateSpeed;
+static TEST_STATE		testStateSpeed	= TEST_STATE_UP;
 static TEST_STATE		testStateRev;
 static volatile uint8_t	debugSpeed = 123;
 static unsigned char makeTestDataSpeed( void );
@@ -44,7 +44,8 @@ void aplComDataMain( void )
 	inAplCtrlSet	= getAplCtrlSet();
 
 	//通常モード
-	aplComData.speed	= debugSpeed;
+	aplComData.speed	= inAplDataPalse->speed;
+//	aplComData.speed	= makeTestDataSpeed();		// debugSpeed;
 	aplComData.rev		= inAplDataPalse->rev;
 
 	aplComData.palseSpeed	= inAplCtrlSet->palseSpeed;

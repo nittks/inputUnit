@@ -23,11 +23,11 @@ ISR(USART0_RXC_vect)		//UART受信割込み
 {
 	interGetUartRxData();
 }
-ISR(USART1_DRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
+ISR(USART0_DRE_vect)	//UART DataRegisterEmpty送信レジスタ空割込み
 {
 	interSetUartTxData();
 }
-ISR( USART1_TXC_vect ){	//UART送信完了割込み
+ISR( USART0_TXC_vect ){	//UART送信完了割込み
 	interUartTxFin();
 }
 

@@ -22,8 +22,7 @@ void initDrvInPalseCnt( void )
 	for( i=0 ; i<DRV_IN_PALSE_CNT_NO_MAX ; i++ ){
 		drvInPulseCnt.cycCnt[i] = 0;
 	}
-	PORTF.PIN0CTRL	= PORT_ISC_RISING_gc;	// 立ち上がり割り込み
-	PORTF.PIN1CTRL	= PORT_ISC_RISING_gc;
+	// 割り込みレジスタ設定はmain.cへ移動。理由は特にない。最適方法模索中。
 }
 
 //********************************************************************************
