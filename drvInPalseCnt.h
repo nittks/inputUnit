@@ -1,4 +1,6 @@
 
+#define	CYC_CNT_LSB		(0.1)
+
 typedef enum{
 	DRV_IN_PALSE_CNT_NO_SPEED,
 	DRV_IN_PALSE_CNT_NO_REV,

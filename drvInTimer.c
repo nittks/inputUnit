@@ -63,10 +63,10 @@ void startDrvInTimer( DRV_IN_TIMER_ID timerId )
 	}
 	//スタート＆クリア
 	drvInTimer[timerId].state		= DRV_IN_TIMER_STATE_START;
-	drvInTimer[timerId].cnt100ns			= 0;
+	drvInTimer[timerId].cnt100ns	= 0;
 
 	timerIns[timerId].cnt100ns		= 0;
-	timerIns[timerId].startCnt	= inTimerReg;
+	timerIns[timerId].startCnt		= inTimerReg;
 	
 	sei();
 }
