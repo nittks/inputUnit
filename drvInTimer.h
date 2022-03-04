@@ -14,7 +14,7 @@ typedef enum{
 
 typedef struct{
 	DRV_IN_TIMER_STATE		state;		//タイマ状態
-	unsigned long	cnt;		//タイマカウント値
+	unsigned long			cnt100ns;	//タイマカウント値
 }DRV_IN_TIMER;
 
 extern void initDrvInTimer( void );

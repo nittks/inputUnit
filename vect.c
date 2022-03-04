@@ -35,9 +35,10 @@ ISR(TCB0_INT_vect)	//タイマオーバーフロー(パルス間隔計測タイ�
 {
 	interDrvInTimerOverflow();
 }
+
 ISR(PORTF_PORT_vect)			//ポートF割り込み
 {
-	interPosEdgeSpeed();
+	interPortF();
 }
 ISR(NVMCTRL_EE_vect){		//EEPROMアクセス可能割込み
 	interEepRedy();

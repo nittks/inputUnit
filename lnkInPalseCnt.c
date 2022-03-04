@@ -39,23 +39,23 @@ void lnkInPalseCntMain( void )
 	drvInPalseCnt	= getDrvInPalesCnt();
 
 	//車速計算
-	if( drvInPalseCnt->cycCnt[NO_SPEED] == 0 ){
+	if( drvInPalseCnt->cyc100ns[NO_SPEED] == 0 ){
 		aplDataPalse.speed = 0;		//未計測
 	}else{
 		//周期振れにより、車速の境界を跨くので四捨五入し振れを抑える
-//		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cycCnt[NO_SPEED])/(N1*N2);
-		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cycCnt[NO_SPEED])/(lnkInPalseCnt.palseSpeed*N2);
+//		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cyc100ns[NO_SPEED])/(N1*N2);
+		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cyc100ns[NO_SPEED]/100)/(lnkInPalseCnt.palseSpeed*N2);
 		tmpCalcSpeed	= (tmpCalcSpeed + ROUND5) /ROUND_DIGIT;
 		aplDataPalse.speed	= tmpCalcSpeed;
 	}
 	
 	//回転数計算
-	if( drvInPalseCnt->cycCnt[NO_REV] == 0 ){
+	if( drvInPalseCnt->cyc100ns[NO_REV] == 0 ){
 		aplDataPalse.rev = 0;
 	}else{
-//		aplData.rev		= (unsigned long)TIME_US*60/drvInPalseCnt->cycCnt[NO_REV]/C; 
-		tmp				= ROUND_DIGIT*((unsigned long)TIME_US*60/drvInPalseCnt->cycCnt[NO_REV])/C; 
-		tmpCalcRev		= ROUND_DIGIT*((unsigned long)TIME_US*60/drvInPalseCnt->cycCnt[NO_REV]);
+//		aplData.rev		= (unsigned long)TIME_US*60/drvInPalseCnt->cyc100ns[NO_REV]/C; 
+		tmp				= ROUND_DIGIT*((unsigned long)TIME_US*60/drvInPalseCnt->cyc100ns[NO_REV])/C; 
+		tmpCalcRev		= ROUND_DIGIT*((unsigned long)TIME_US*60/drvInPalseCnt->cyc100ns[NO_REV]);
 		tmpCalcRev		= ((tmpCalcRev*10) / (10*lnkInPalseCnt.palseRev/R_SP));
 		tmpCalcRev		= (tmpCalcRev + ROUND5) /ROUND_DIGIT;
 		aplDataPalse.rev		= tmpCalcRev;

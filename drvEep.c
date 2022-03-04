@@ -71,7 +71,7 @@ unsigned char setDrvEep( DRV_EEP_WRITE *inP )
 //********************************************************************************//
 void interEepRedy( void )
 {
-	NVMCTRL.INTFLAGS	&= (~NVMCTRL_EEREADY_bm);
+	NVMCTRL.INTFLAGS	|= (NVMCTRL_EEREADY_bm);
 	if( state == EEP_STATE_READ ){		//読み込み途中
 		eepRead();
 	}else if( state == EEP_STATE_WRITE ){	//書込み途中

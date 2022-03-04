@@ -59,7 +59,7 @@ void initMain( void )
 {
 
 	initReg();
-
+	
 	initDrvIn();
 	initLnkIn();
 	initApl();
@@ -67,8 +67,30 @@ void initMain( void )
 	initDrvOut();
 	
 	initTaskTimer();
-}
+	
+/*		
+	atmel_start_init();
+		
+	USART_0_init();
+	USART_0_enable();
+	USART_0_enable_tx();
 
+	sei();
+
+*/
+	/* Replace with your application code */
+/*
+	while (1) {
+		cnt++;
+		if( USART_0_is_tx_ready() != 0 ){
+			USART_0_write( 0x55 );
+		}
+*/		
+
+//	for( i=0 ; i<TASK_NUM ; i++ ){
+//		taskParameter[i] = taskParameterDefault[i];
+//	}
+}
 static void mainTask( void )
 {
 	unsigned char	i;
@@ -83,7 +105,9 @@ static void mainTask( void )
 				taskParameter[i].currentTime = taskParameter[i].cycleTime; 
 				//タスク実行
 
+				PORTA.OUT	|= 0x40;
 				taskParameter[i].func();
+				PORTA.OUT	&= (~0x40);
 			}
 		}
 	}
@@ -148,8 +172,9 @@ static void initReg(void)
 	CLKCTRL.MCLKCTRLB	= 0;
 	CLKCTRL.MCLKCTRLA	= CLKCTRL_CLKSEL_OSC20M_gc;
 	
-	//I/O設定
-	PORTA.DIR	= 0x00;
+	
+		//I/O設定
+	PORTA.DIR	= 0x49;
 	PORTC.DIR	= 0x00;
 	PORTD.DIR	= 0x00;
 	PORTF.DIR	= 0x00;
@@ -158,7 +183,26 @@ static void initReg(void)
 	PORTC.OUT	= 0x00;
 	PORTD.OUT	= 0x00;
 	PORTF.OUT	= 0x00;
+	
 
+	PORTA.PIN0CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN1CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN2CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN3CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN4CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN5CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN6CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTA.PIN7CTRL	= (1<<PORT_PULLUPEN_bp) ;
+
+	PORTC.PIN0CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTC.PIN1CTRL	= (0<<PORT_PULLUPEN_bp) ;
+	PORTC.PIN2CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTC.PIN3CTRL	= (0<<PORT_PULLUPEN_bp) ;
+
+	PORTD.PIN0CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTD.PIN1CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTD.PIN2CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTD.PIN3CTRL	= (1<<PORT_PULLUPEN_bp) ;
 	PORTD.PIN4CTRL	= (1<<PORT_PULLUPEN_bp) ;
 	PORTD.PIN5CTRL	= (1<<PORT_PULLUPEN_bp) ;
 	PORTD.PIN6CTRL	= (1<<PORT_PULLUPEN_bp) ;
@@ -166,7 +210,13 @@ static void initReg(void)
 
 	PORTF.PIN0CTRL	= (0<<PORT_PULLUPEN_bp) | (PORT_ISC_RISING_gc) ;
 	PORTF.PIN1CTRL	= (0<<PORT_PULLUPEN_bp) | (PORT_ISC_RISING_gc) ;
-
+	PORTF.PIN2CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTF.PIN3CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTF.PIN4CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTF.PIN5CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTF.PIN6CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	PORTF.PIN7CTRL	= (1<<PORT_PULLUPEN_bp) ;
+	
 	//割り込み許可
 	sei();
 }

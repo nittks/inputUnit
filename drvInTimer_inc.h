@@ -1,10 +1,10 @@
-#define	TIMER_REG_LSB		1		//1cnt=10us
+#define	TIMER_REG_LSB		(0.1)	//1cnt=0.1us
 #define	TIMER_REG_MAX		0xFFFF	//60ms毎、オーバーフロー割り込みを入れる
 
-#define		START_TIMER_1A		(TCB0.CTRLA |= TCB_ENABLE_bm)
-#define		STOP_TIMER_1A		(TCB0.CTRLA &= (~TCB_ENABLE_bm))
-#define		EN_INTER_OVERFLOW_1A	(TCB0.INTCTRL |= TCB_CAPT_bm)
-#define		DI_INTER_OVERFLOW_1A	(TCB0.INTCTRL &= (~TCB_CAPT_bm))
+#define		START_TIMER		(TCB0.CTRLA |= TCB_ENABLE_bm)
+#define		STOP_TIMER		(TCB0.CTRLA &= (~TCB_ENABLE_bm))
+#define		EN_INTER_OVERFLOW	(TCB0.INTCTRL |= TCB_CAPT_bm)
+#define		DI_INTER_OVERFLOW	(TCB0.INTCTRL &= (~TCB_CAPT_bm))
 
 #define		GET_TIMER_CNT		(TCB0.CNT)
 #define		SET_TIMER_CNT(data)	(TCB0.CNT=data)
@@ -49,6 +49,6 @@ typedef enum{
 
 typedef struct{
 	TIMER_STATE		state;		//タイマ状態
-	unsigned long	cnt;		//タイマカウント値
+	unsigned long	cnt100ns;	//タイマカウント値 LSB 1=100ns
 	unsigned short	startCnt;	//タイマ動作開始時、マイコンタイマレジスタ値
 }TIMER_INS;
