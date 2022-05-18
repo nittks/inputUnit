@@ -6,6 +6,8 @@
 #include "aplCtrl.h"
 
 static APL_COM_DATA		aplComData;
+static uint8_t			speedBuff[SPEED_BUF_NUM];
+static uint8_t			speedBuffCnt;
 
 static unsigned char	testCycSpeed;
 static unsigned char	testCycRev;
@@ -14,6 +16,7 @@ static unsigned short	testRev;
 static TEST_STATE		testStateSpeed	= TEST_STATE_UP;
 static TEST_STATE		testStateRev;
 static volatile uint8_t	debugSpeed = 123;
+static speedStabilize( uint8_t speed );
 static unsigned char makeTestDataSpeed( void );
 static unsigned short makeTestDataRev( void );
 //********************************************************************************
@@ -28,6 +31,11 @@ void initAplComData( void )
 	aplComData.ig			= 0;
 	aplComData.ill			= 0;
 	aplComData.vtc			= 0;
+
+	for( uint8_t i=0 ; i<SPEED_BUF_NUM ; i++ ){
+		speedBuff[i]	= 0;
+	}
+	speedBuffCnt	= 0;
 }
 //********************************************************************************
 // メイン処理
@@ -44,7 +52,7 @@ void aplComDataMain( void )
 	inAplCtrlSet	= getAplCtrlSet();
 
 	//通常モード
-	aplComData.speed	= inAplDataPalse->speed;
+	aplComData.speed	= speedStabilize( inAplDataPalse->speed );		// 車速安定化処理(表示が暴れないように)
 //	aplComData.speed	= makeTestDataSpeed();		// debugSpeed;
 	aplComData.rev		= inAplDataPalse->rev;
 
@@ -78,6 +86,26 @@ void aplComDataMain( void )
 APL_COM_DATA *getAplComData( void )
 {
 	return( &aplComData );
+}
+//********************************************************************************
+// 車速安定化処理
+//********************************************************************************
+static speedStabilize( uint8_t speed )
+{
+	speedBuff[speedBuffCnt++] = speed;
+	if( speedBuffCnt >= SPEED_BUF_NUM ){
+		speedBuffCnt = 0;
+	}
+
+	// 平均
+	uint16_t	speedSum = 0;
+	for( uint8_t i=0 ; i<SPEED_BUF_NUM ; i++ ){
+		speedSum += speedBuff[i];
+	}
+
+	uint8_t	speedMoveAverage = speedSum / SPEED_BUF_NUM;
+
+	return( speedMoveAverage );
 }
 
 //********************************************************************************
