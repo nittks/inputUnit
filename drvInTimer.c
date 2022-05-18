@@ -1,6 +1,8 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdbool.h>
+
 #include "drvInTimer_inc.h"
 #include "drvInTimer.h"
 #include "aplData.h"
@@ -112,7 +114,7 @@ void stopDrvInTimer( DRV_IN_TIMER_ID timerId )
 //************************************************************
 // タイマ値取得
 //************************************************************
-DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId )
+DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId , bool modeSplit )	// modeSplit = true 時間を取得するがクリアしない
 {
 	unsigned short	inTimerReg;
 	
@@ -130,17 +132,20 @@ DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId )
 	}
 	//公開用変数へコピー
 	drvInTimer[timerId].cnt100ns	= timerIns[timerId].cnt100ns;
-	//次の周期カウント用にクリア
-	timerIns[timerId].cnt100ns		= 0;
-	timerIns[timerId].startCnt = inTimerReg;		//計測開始カウント値更新
 
-	
+	if( !modeSplit ){									// スプリットでないときだけクリア
+		//次の周期カウント用にクリア
+		timerIns[timerId].cnt100ns		= 0;
+		timerIns[timerId].startCnt = inTimerReg;		//計測開始カウント値更新
+	}
+
 	sei();
 
 	//getした瞬間のデータが欲しいため、実態を返す
 	//(ポインタだと使用する前に割り込みにより値が変化する可能性がある
 	return( drvInTimer[timerId] );
 }
+
 //************************************************************
 // タイマ状態のみ取得
 //************************************************************

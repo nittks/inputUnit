@@ -1,3 +1,5 @@
+#ifndef DRV_IN_TIMER_H
+#define DRV_IN_TIMER_H
 
 typedef enum{
 	DRV_IN_TIMER_ID_SPEED,
@@ -22,6 +24,8 @@ extern void drvInTimerMain( void );
 extern void startDrvInTimer( DRV_IN_TIMER_ID drvInTimerId );
 extern void clearDrvInTimer( DRV_IN_TIMER_ID drvInTimerId );
 extern void stopDrvInTimer( DRV_IN_TIMER_ID drvInTimerId );
-extern DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID drvInTimerId );
+extern DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID drvInTimerId , bool modeSplit );
 extern DRV_IN_TIMER getDrvInTimerState( DRV_IN_TIMER_ID drvInTimerId );
 extern void interDrvInTimerOverflow( void );
+
+#endif
