@@ -6,7 +6,7 @@
 #include "aplCtrl.h"
 
 static APL_COM_DATA		aplComData;
-static uint8_t			speedBuff[SPEED_BUF_NUM];
+static uint16_t			speedBuff[SPEED_BUF_NUM];
 static uint8_t			speedBuffCnt;
 
 static unsigned char	testCycSpeed;
@@ -16,7 +16,7 @@ static unsigned short	testRev;
 static TEST_STATE		testStateSpeed	= TEST_STATE_UP;
 static TEST_STATE		testStateRev;
 static volatile uint8_t	debugSpeed = 123;
-static speedStabilize( uint8_t speed );
+static uint8_t speedStabilize( uint16_t speed );
 static unsigned char makeTestDataSpeed( void );
 static unsigned short makeTestDataRev( void );
 //********************************************************************************
@@ -90,7 +90,7 @@ APL_COM_DATA *getAplComData( void )
 //********************************************************************************
 // 車速安定化処理
 //********************************************************************************
-static speedStabilize( uint8_t speed )
+static uint8_t speedStabilize( uint16_t speed )
 {
 	speedBuff[speedBuffCnt++] = speed;
 	if( speedBuffCnt >= SPEED_BUF_NUM ){
@@ -103,9 +103,21 @@ static speedStabilize( uint8_t speed )
 		speedSum += speedBuff[i];
 	}
 
-	uint8_t	speedMoveAverage = speedSum / SPEED_BUF_NUM;
+	uint16_t	speedAverage = speedSum / SPEED_BUF_NUM;
+	uint8_t		retSpeed=0;
+	if( speedAverage < ROUND5 ){								// 0-1ブロック用
+		retSpeed	= 0;
+	}else if( speedAverage >= ((uint16_t)SPEED_MAX)*DIGIT_01KMPH){			// 異常
+		retSpeed	= SPEED_MAX;
+	}else{
+		if( speedAverage <= (aplComData.speed*DIGIT_01KMPH) ){	// ==のときは、切り捨てになるのでここに入る
+			retSpeed	= ((speedAverage + ROUND5) /DIGIT_01KMPH) - 1;	// ヒスにより変動しない幅を広げたい。20.1km/h -> 22.4km/h = 21km/hとしたい
+		}else{
+			retSpeed	= ((speedAverage + ROUND5) /DIGIT_01KMPH);
+		}
+	}
 
-	return( speedMoveAverage );
+	return( retSpeed );
 }
 
 //********************************************************************************

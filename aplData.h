@@ -13,7 +13,7 @@ typedef enum{
 }APL_DATA_EEP_STATE;
 
 typedef struct{
-	unsigned char	speed;
+	unsigned short	speed;
 	unsigned short	rev;
 }APL_DATA_PALSE;
 

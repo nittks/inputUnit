@@ -18,8 +18,8 @@ void initLnkInPalseCnt( void )
 	lnkInPalseCnt.palseSpeed	= INIT_PALSE_SPEED;
 	lnkInPalseCnt.palseRev		= INIT_PALSE_REV; 
 
-	preCyc100ns[NO_SPEED]		= 0;
-	preCyc100ns[NO_REV]			= 0;
+	preCyc100ns[NO_SPEED]		= 0xFFFFFFFF;
+	preCyc100ns[NO_REV]			= 0xFFFFFFFF;
 }
 //********************************************************************************
 // 設定値セット
@@ -52,16 +52,15 @@ void lnkInPalseCntMain( void )
 			( drvInPalseCnt->cyc100ns[NO_SPEED] > preCyc100ns[NO_SPEED] )	// 前回よりパルスが遅くなっているとき、今回周期で計算
 																			//(低速時は周期が数秒とかになるため、減速時のみパルスが来る前に現在周期計測時間で計算し、応答性を上げたい
 		){
-			//周期振れにより、車速の境界を跨くので四捨五入し振れを抑える
-	//		tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/drvInPalseCnt->cyc100ns[NO_SPEED])/(N1*N2);
-			tmpCalcSpeed	= ROUND_DIGIT*((unsigned long)(60*60)*1*TIME_US/(drvInPalseCnt->cyc100ns[NO_SPEED]/(1/CYC_CNT_LSB)))/(lnkInPalseCnt.palseSpeed*N2);
-			tmpCalcSpeed	= (tmpCalcSpeed + ROUND5) /ROUND_DIGIT;
-			aplDataPalse.speed	= tmpCalcSpeed;
+			uint8_t		n1	= lnkInPalseCnt.palseSpeed;
+			uint32_t	T	= drvInPalseCnt->cyc100ns[NO_SPEED];
+			tmpCalcSpeed	= ((60*60)*1*TIME_US) / ((T / (1/CYC_CNT_LSB)) * SPEED_LSB ) / (n1*N2);
+			aplDataPalse.speed	= (uint16_t)tmpCalcSpeed;
 		}else{
 			// 前回値を出力
 		}
 	}
-	preCyc100ns[NO_SPEED]	= aplDataPalse.speed;
+	preCyc100ns[NO_SPEED]	= drvInPalseCnt->cyc100ns[NO_SPEED];
 	
 	//回転数計算
 	if( drvInPalseCnt->cyc100ns[NO_REV] == 0 ){
@@ -81,7 +80,7 @@ void lnkInPalseCntMain( void )
 		// 前回値を出力
 		}
 	}
-	preCyc100ns[NO_REV]	= aplDataPalse.rev;
+	preCyc100ns[NO_REV]	= drvInPalseCnt->cyc100ns[NO_REV] ;
 
 
 	setAplDataPalse( &aplDataPalse );

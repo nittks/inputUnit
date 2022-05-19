@@ -14,7 +14,8 @@ typedef enum{
 #define INIT_PALSE_SPEED	4	//1回転当たりのパルス数
 #define INIT_PALSE_REV		4	//気筒数
 
-#define TIME_US	1000000		//usをsに換算し計算
+#define TIME_US	((uint32_t)1000000)		//1sを1000000usに換算し計算
+#define DIGIT		10		//小数点第1位を1として扱う
 #define ROUND_DIGIT	10		//小数点第1位で丸める。10倍して5を足して10で割る
 #define ROUND5		5		//四捨五入。5を足して10で割る
 

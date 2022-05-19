@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #define	CYC_CNT_LSB		(0.1)
+#define SPEED_LSB		(0.1)
 
 typedef enum{
 	DRV_IN_PALSE_CNT_NO_SPEED,
