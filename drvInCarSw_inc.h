@@ -1,8 +1,8 @@
 
 
 
-#define		ON		0
-#define		OFF		1
+#define		ON		1
+#define		OFF		0
 
 #define		PORT_IG		((PORTD.IN >> 4) & 0x01)
 #define		PORT_ACC	((PORTD.IN >> 5) & 0x01)
