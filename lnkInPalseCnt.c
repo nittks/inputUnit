@@ -52,9 +52,9 @@ void lnkInPalseCntMain( void )
 			( drvInPalseCnt->cyc100ns[NO_SPEED] > preCyc100ns[NO_SPEED] )	// 前回よりパルスが遅くなっているとき、今回周期で計算
 																			//(低速時は周期が数秒とかになるため、減速時のみパルスが来る前に現在周期計測時間で計算し、応答性を上げたい
 		){
-			uint8_t		n1	= lnkInPalseCnt.palseSpeed;
-			uint32_t	T	= drvInPalseCnt->cyc100ns[NO_SPEED];
-			tmpCalcSpeed	= ((60*60)*1*TIME_US) / ((T / (1/CYC_CNT_LSB)) * SPEED_LSB ) / (n1*N2);
+			volatile	uint8_t		n1	= lnkInPalseCnt.palseSpeed;
+			volatile	uint32_t	T	= drvInPalseCnt->cyc100ns[NO_SPEED];
+			volatile	uint32_t	tmpCalcSpeed	= ((60*60)*1*TIME_US) / ((T / (1/CYC_CNT_LSB)) * SPEED_LSB ) / (n1*N2);
 			aplDataPalse.speed	= (uint16_t)tmpCalcSpeed;
 		}else{
 			// 前回値を出力

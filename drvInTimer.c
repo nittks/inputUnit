@@ -127,7 +127,7 @@ DRV_IN_TIMER getDrvInTimer( DRV_IN_TIMER_ID timerId , bool modeSplit )	// modeSp
 	timerIns[timerId].cnt100ns += (inTimerReg - timerIns[timerId].startCnt);
 
 	//オーバーフロー(0km/h)検出
-	if(	timerIns[timerId].cnt100ns > TIMER_CNT_MAX[N1_04] ){
+	if(	timerIns[timerId].cnt100ns > TIMER_CNT_MAX_US[N1_04] ){
 		timerIns[timerId].state	= DRV_IN_TIMER_STATE_OVERFLOW;
 	}
 	//公開用変数へコピー
@@ -169,7 +169,9 @@ void interDrvInTimerOverflow( void )
 		timerIns[i].cnt100ns += (TIMER_REG_MAX - timerIns[i].startCnt);
 		timerIns[i].startCnt = 0;		//計測開始カウント値更新
 		//オーバーフロー(0km/h)検出
-		if(	timerIns[i].cnt100ns > TIMER_CNT_MAX[N1_04] ){
+		if(	timerIns[i].cnt100ns > (  TIMER_CNT_MAX_US[N1_04] * 10 * 2 )){
+			// usを10倍して100nsにする。1km/hの2倍の時間パルスがなかったらオーバーフローとする
+
 			drvInTimer[i].state	= DRV_IN_TIMER_STATE_OVERFLOW;
 //			drvInTimer[i].cnt100ns		= 0;
 //			stopTimer(i);

@@ -13,7 +13,7 @@
 #define		KMPERH60	60
 #define		V1KMPERH	1
 #define		N2			637
-#define		NS			((unsigned long)1000000)	//sec->ns
+#define		US			((unsigned long)1000000)	//sec->us
 enum{
 	N1_04,
 	N1_08,
@@ -32,12 +32,12 @@ enum{
 };
 
 //タイマカウント最大値(1km/h未満になる周期)。0㎞/h(オーバーフロー)判定用
-const static unsigned long TIMER_CNT_MAX[N1_MAX] = {
-	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_04 * N2)),
-	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_08 * N2)),
-	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_16 * N2)),
-	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_20 * N2)),
-	(NS*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_25 * N2))
+volatile const static unsigned long TIMER_CNT_MAX_US[N1_MAX] = {
+	(US*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_04 * N2)),
+	(US*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_08 * N2)),
+	(US*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_16 * N2)),
+	(US*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_20 * N2)),
+	(US*SEC60*KMPERH60)/(V1KMPERH*(N1_PALSE_25 * N2))
 };
 
 typedef enum{
