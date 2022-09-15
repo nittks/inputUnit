@@ -23,7 +23,13 @@ void lnkInComMain( void )
 	
 	inDrvUartRx = getDrvUartRx();
 
-	if( inDrvUartRx->rxFlag == true ){
+	if( inDrvUartRx->rxFlag != true ){
+		APL_DATA_COM *inAplDataCom = getAplDataCom();
+		outAplDataCom			= *inAplDataCom;
+		outAplDataCom.chReq		= false;
+		setAplDataCom( &outAplDataCom );
+
+	}else{
 
 		sum=0;
 		for( i=0 ; i<inDrvUartRx->rxDataNum-1 ; i++ ){
@@ -33,7 +39,7 @@ void lnkInComMain( void )
 		if( sum != inDrvUartRx->rxData[inDrvUartRx->rxDataNum-1]){
 			//SUMエラー。処理無し
 		}else{
-			outAplDataCom.chReq		= true;
+			outAplDataCom.chReq			= true;
 			outAplDataCom.palseSpeed	= inDrvUartRx->rxData[UART_NO_PALSE_SET] & 0x0F;
 			outAplDataCom.palseRev		= inDrvUartRx->rxData[UART_NO_PALSE_SET] >> 4;
 

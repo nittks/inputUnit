@@ -19,5 +19,5 @@ typedef enum{
 #define ROUND_DIGIT	10		//小数点第1位で丸める。10倍して5を足して10で割る
 #define ROUND5		5		//四捨五入。5を足して10で割る
 
-const unsigned char SETTING_PALSE_SPEED[6]=	{0,4,8,16,20,25};		//車速パルス仕様
-const unsigned char SETTING_PALSE_REV[9]={0,1,2,3,4,5,6,8,10};	//回転数パルス仕様(気筒数
+const unsigned char SETTING_PALSE_SPEED[6]=	{2,4,8,16,20,25};		//車速パルス仕様
+const unsigned char SETTING_PALSE_REV[9]={1,2,3,4,5,6,8,10,12};	//回転数パルス仕様(気筒数
